@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="BanglaSafe">
+  <rect width="32" height="32" rx="7" fill="#16191d"/>
+  <!-- the finding as a mark: one register stands taller than the rest -->
+  <rect x="5"  y="17" width="5" height="10" rx="1.6" fill="#2a78d6"/>
+  <rect x="13.5" y="8"  width="5" height="19" rx="1.6" fill="#eb6834"/>
+  <rect x="22" y="15" width="5" height="12" rx="1.6" fill="#2a78d6"/>
+</svg>

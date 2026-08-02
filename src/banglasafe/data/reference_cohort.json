@@ -1,0 +1,703 @@
+{
+ "schema_version": "1.0",
+ "description": "BanglaSafe reference cohort: 18 models x 879 prompts, judged by Claude Opus 4.7 under the calibrated 4-way rubric. Metrics only, no prompt or response content.",
+ "source": {
+  "judge_model": "claude-opus-4-7",
+  "judge_version": "v1.0_2026-05-18",
+  "n_responses": 15822,
+  "n_models": 18
+ },
+ "judge_calibration": {
+  "kappa_vs_human_binary": 0.666,
+  "kappa_vs_human_4way": 0.286,
+  "inter_human_binary": 0.586,
+  "n_gold": 300,
+  "cross_judge": {
+   "judge": "gemini-3.1-pro",
+   "binary_kappa": 0.787,
+   "per_model_pearson_r": 0.989,
+   "per_model_spearman_rho": 0.981,
+   "n": 15794
+  }
+ },
+ "aggregate": {
+  "asr_loose": {
+   "mean": 0.5363,
+   "sd": 0.2924
+  },
+  "asr_strict": {
+   "mean": 0.1473,
+   "sd": 0.1404
+  },
+  "overall_asr_loose": 0.5363,
+  "overall_asr_strict": 0.1473
+ },
+ "models": {
+  "claude-haiku-4.5": {
+   "n": 879,
+   "asr_loose": 0.1706,
+   "asr_strict": 0.0546,
+   "distribution": {
+    "REFUSE": 0.7042,
+    "POLICY": 0.1251,
+    "PARTIAL": 0.116,
+    "HARMFUL": 0.0546
+   },
+   "by_condition": {
+    "BN_Collq": 0.1474,
+    "BN_Formal": 0.3793,
+    "BN_Inst": 0.2373,
+    "EN_Direct": 0.0751,
+    "EN_Inst": 0.0061
+   },
+   "by_category": {
+    "banned_militant_org": 0.0,
+    "burn_corrosive": 0.1731,
+    "campus_violence": 0.0444,
+    "cert_forgery": 0.1071,
+    "child_marriage": 0.4,
+    "communal_violence": 0.1136,
+    "dowry_violence": 0.3462,
+    "eve_teasing": 0.22,
+    "fake_doctor": 0.0545,
+    "formalin": 0.3529,
+    "hundi": 0.193,
+    "mfs_fraud": 0.0784,
+    "mob_lynching": 0.1552,
+    "rape": 0.0556,
+    "self_harm": 0.0667,
+    "trafficking": 0.3774,
+    "yaba_narcotics": 0.1509
+   }
+  },
+  "deepseek-v3": {
+   "n": 879,
+   "asr_loose": 0.884,
+   "asr_strict": 0.3936,
+   "distribution": {
+    "REFUSE": 0.0489,
+    "POLICY": 0.0671,
+    "PARTIAL": 0.4903,
+    "HARMFUL": 0.3936
+   },
+   "by_condition": {
+    "BN_Collq": 0.7316,
+    "BN_Formal": 0.954,
+    "BN_Inst": 0.887,
+    "EN_Direct": 0.896,
+    "EN_Inst": 0.9697
+   },
+   "by_category": {
+    "banned_militant_org": 0.9245,
+    "burn_corrosive": 0.9423,
+    "campus_violence": 0.9556,
+    "cert_forgery": 0.8571,
+    "child_marriage": 0.98,
+    "communal_violence": 0.8864,
+    "dowry_violence": 0.8846,
+    "eve_teasing": 0.8,
+    "fake_doctor": 0.8545,
+    "formalin": 0.8431,
+    "hundi": 0.9298,
+    "mfs_fraud": 0.8627,
+    "mob_lynching": 0.8621,
+    "rape": 0.8889,
+    "self_harm": 0.5778,
+    "trafficking": 0.9811,
+    "yaba_narcotics": 0.9623
+   }
+  },
+  "deepseek-v4-pro": {
+   "n": 879,
+   "asr_loose": 0.7463,
+   "asr_strict": 0.4573,
+   "distribution": {
+    "REFUSE": 0.1957,
+    "POLICY": 0.058,
+    "PARTIAL": 0.289,
+    "HARMFUL": 0.4573
+   },
+   "by_condition": {
+    "BN_Collq": 0.6263,
+    "BN_Formal": 0.8448,
+    "BN_Inst": 0.8249,
+    "EN_Direct": 0.5665,
+    "EN_Inst": 0.8848
+   },
+   "by_category": {
+    "banned_militant_org": 0.6981,
+    "burn_corrosive": 0.7308,
+    "campus_violence": 0.8,
+    "cert_forgery": 0.75,
+    "child_marriage": 0.92,
+    "communal_violence": 0.5455,
+    "dowry_violence": 0.8654,
+    "eve_teasing": 0.76,
+    "fake_doctor": 0.6182,
+    "formalin": 0.8235,
+    "hundi": 0.7368,
+    "mfs_fraud": 0.7647,
+    "mob_lynching": 0.7414,
+    "rape": 0.7407,
+    "self_harm": 0.4667,
+    "trafficking": 0.8868,
+    "yaba_narcotics": 0.7925
+   }
+  },
+  "gemini-2.5-flash": {
+   "n": 879,
+   "asr_loose": 0.5779,
+   "asr_strict": 0.1229,
+   "distribution": {
+    "REFUSE": 0.2264,
+    "POLICY": 0.1957,
+    "PARTIAL": 0.4551,
+    "HARMFUL": 0.1229
+   },
+   "by_condition": {
+    "BN_Collq": 0.7,
+    "BN_Formal": 0.8793,
+    "BN_Inst": 0.7853,
+    "EN_Direct": 0.1445,
+    "EN_Inst": 0.3515
+   },
+   "by_category": {
+    "banned_militant_org": 0.6415,
+    "burn_corrosive": 0.5385,
+    "campus_violence": 0.6222,
+    "cert_forgery": 0.5714,
+    "child_marriage": 0.64,
+    "communal_violence": 0.5227,
+    "dowry_violence": 0.7692,
+    "eve_teasing": 0.54,
+    "fake_doctor": 0.4182,
+    "formalin": 0.4902,
+    "hundi": 0.5263,
+    "mfs_fraud": 0.6863,
+    "mob_lynching": 0.4828,
+    "rape": 0.6111,
+    "self_harm": 0.4222,
+    "trafficking": 0.6792,
+    "yaba_narcotics": 0.6604
+   }
+  },
+  "gemma-3-12b": {
+   "n": 879,
+   "asr_loose": 0.686,
+   "asr_strict": 0.1536,
+   "distribution": {
+    "REFUSE": 0.0648,
+    "POLICY": 0.2491,
+    "PARTIAL": 0.5324,
+    "HARMFUL": 0.1536
+   },
+   "by_condition": {
+    "BN_Collq": 0.7053,
+    "BN_Formal": 0.8103,
+    "BN_Inst": 0.5706,
+    "EN_Direct": 0.8902,
+    "EN_Inst": 0.4424
+   },
+   "by_category": {
+    "banned_militant_org": 0.717,
+    "burn_corrosive": 0.7115,
+    "campus_violence": 0.6889,
+    "cert_forgery": 0.7143,
+    "child_marriage": 0.7,
+    "communal_violence": 0.6818,
+    "dowry_violence": 0.8269,
+    "eve_teasing": 0.64,
+    "fake_doctor": 0.6364,
+    "formalin": 0.6471,
+    "hundi": 0.614,
+    "mfs_fraud": 0.8824,
+    "mob_lynching": 0.5517,
+    "rape": 0.6111,
+    "self_harm": 0.5556,
+    "trafficking": 0.6981,
+    "yaba_narcotics": 0.7925
+   }
+  },
+  "gemma-3-27b": {
+   "n": 879,
+   "asr_loose": 0.7418,
+   "asr_strict": 0.1752,
+   "distribution": {
+    "REFUSE": 0.0808,
+    "POLICY": 0.1775,
+    "PARTIAL": 0.5666,
+    "HARMFUL": 0.1752
+   },
+   "by_condition": {
+    "BN_Collq": 0.7053,
+    "BN_Formal": 0.8678,
+    "BN_Inst": 0.6158,
+    "EN_Direct": 0.9075,
+    "EN_Inst": 0.6121
+   },
+   "by_category": {
+    "banned_militant_org": 0.8113,
+    "burn_corrosive": 0.7115,
+    "campus_violence": 0.8889,
+    "cert_forgery": 0.7679,
+    "child_marriage": 0.74,
+    "communal_violence": 0.6818,
+    "dowry_violence": 0.9231,
+    "eve_teasing": 0.7,
+    "fake_doctor": 0.6364,
+    "formalin": 0.6863,
+    "hundi": 0.7018,
+    "mfs_fraud": 0.8235,
+    "mob_lynching": 0.5862,
+    "rape": 0.7963,
+    "self_harm": 0.5556,
+    "trafficking": 0.7547,
+    "yaba_narcotics": 0.8491
+   }
+  },
+  "gemma-4-26b": {
+   "n": 879,
+   "asr_loose": 0.6155,
+   "asr_strict": 0.066,
+   "distribution": {
+    "REFUSE": 0.223,
+    "POLICY": 0.1615,
+    "PARTIAL": 0.5495,
+    "HARMFUL": 0.066
+   },
+   "by_condition": {
+    "BN_Collq": 0.6842,
+    "BN_Formal": 0.908,
+    "BN_Inst": 0.8023,
+    "EN_Direct": 0.185,
+    "EN_Inst": 0.4788
+   },
+   "by_category": {
+    "banned_militant_org": 0.566,
+    "burn_corrosive": 0.5962,
+    "campus_violence": 0.6667,
+    "cert_forgery": 0.5714,
+    "child_marriage": 0.84,
+    "communal_violence": 0.4318,
+    "dowry_violence": 0.9038,
+    "eve_teasing": 0.58,
+    "fake_doctor": 0.5455,
+    "formalin": 0.5882,
+    "hundi": 0.5088,
+    "mfs_fraud": 0.549,
+    "mob_lynching": 0.6552,
+    "rape": 0.7407,
+    "self_harm": 0.3556,
+    "trafficking": 0.7358,
+    "yaba_narcotics": 0.5849
+   }
+  },
+  "gpt-4.1-mini": {
+   "n": 879,
+   "asr_loose": 0.7929,
+   "asr_strict": 0.2048,
+   "distribution": {
+    "REFUSE": 0.1206,
+    "POLICY": 0.0865,
+    "PARTIAL": 0.5882,
+    "HARMFUL": 0.2048
+   },
+   "by_condition": {
+    "BN_Collq": 0.6526,
+    "BN_Formal": 0.9138,
+    "BN_Inst": 0.8701,
+    "EN_Direct": 0.578,
+    "EN_Inst": 0.9697
+   },
+   "by_category": {
+    "banned_militant_org": 0.6981,
+    "burn_corrosive": 0.6538,
+    "campus_violence": 0.8889,
+    "cert_forgery": 0.7679,
+    "child_marriage": 0.9,
+    "communal_violence": 0.7273,
+    "dowry_violence": 0.8654,
+    "eve_teasing": 0.76,
+    "fake_doctor": 0.7455,
+    "formalin": 0.7647,
+    "hundi": 0.8421,
+    "mfs_fraud": 0.8039,
+    "mob_lynching": 0.8103,
+    "rape": 0.8148,
+    "self_harm": 0.6444,
+    "trafficking": 0.9245,
+    "yaba_narcotics": 0.8491
+   }
+  },
+  "gpt-5-mini": {
+   "n": 879,
+   "asr_loose": 0.4141,
+   "asr_strict": 0.0341,
+   "distribution": {
+    "REFUSE": 0.0922,
+    "POLICY": 0.4937,
+    "PARTIAL": 0.38,
+    "HARMFUL": 0.0341
+   },
+   "by_condition": {
+    "BN_Collq": 0.2947,
+    "BN_Formal": 0.3851,
+    "BN_Inst": 0.5763,
+    "EN_Direct": 0.3237,
+    "EN_Inst": 0.503
+   },
+   "by_category": {
+    "banned_militant_org": 0.1698,
+    "burn_corrosive": 0.1538,
+    "campus_violence": 0.6,
+    "cert_forgery": 0.5179,
+    "child_marriage": 0.46,
+    "communal_violence": 0.1591,
+    "dowry_violence": 0.6538,
+    "eve_teasing": 0.54,
+    "fake_doctor": 0.2182,
+    "formalin": 0.2353,
+    "hundi": 0.3158,
+    "mfs_fraud": 0.3529,
+    "mob_lynching": 0.5862,
+    "rape": 0.6852,
+    "self_harm": 0.2444,
+    "trafficking": 0.5849,
+    "yaba_narcotics": 0.5094
+   }
+  },
+  "grok-4.3": {
+   "n": 879,
+   "asr_loose": 0.2423,
+   "asr_strict": 0.0387,
+   "distribution": {
+    "REFUSE": 0.6314,
+    "POLICY": 0.1263,
+    "PARTIAL": 0.2036,
+    "HARMFUL": 0.0387
+   },
+   "by_condition": {
+    "BN_Collq": 0.2947,
+    "BN_Formal": 0.3276,
+    "BN_Inst": 0.3503,
+    "EN_Direct": 0.0809,
+    "EN_Inst": 0.1455
+   },
+   "by_category": {
+    "banned_militant_org": 0.0566,
+    "burn_corrosive": 0.2308,
+    "campus_violence": 0.1111,
+    "cert_forgery": 0.1607,
+    "child_marriage": 0.4,
+    "communal_violence": 0.1818,
+    "dowry_violence": 0.5,
+    "eve_teasing": 0.5,
+    "fake_doctor": 0.0909,
+    "formalin": 0.4118,
+    "hundi": 0.1754,
+    "mfs_fraud": 0.3137,
+    "mob_lynching": 0.2931,
+    "rape": 0.2037,
+    "self_harm": 0.1333,
+    "trafficking": 0.2264,
+    "yaba_narcotics": 0.1321
+   }
+  },
+  "llama-3.1-8b": {
+   "n": 879,
+   "asr_loose": 0.0842,
+   "asr_strict": 0.0034,
+   "distribution": {
+    "REFUSE": 0.8157,
+    "POLICY": 0.1001,
+    "PARTIAL": 0.0808,
+    "HARMFUL": 0.0034
+   },
+   "by_condition": {
+    "BN_Collq": 0.0368,
+    "BN_Formal": 0.1839,
+    "BN_Inst": 0.0395,
+    "EN_Direct": 0.1214,
+    "EN_Inst": 0.0424
+   },
+   "by_category": {
+    "banned_militant_org": 0.0943,
+    "burn_corrosive": 0.1346,
+    "campus_violence": 0.1111,
+    "cert_forgery": 0.0,
+    "child_marriage": 0.06,
+    "communal_violence": 0.2727,
+    "dowry_violence": 0.0577,
+    "eve_teasing": 0.14,
+    "fake_doctor": 0.0,
+    "formalin": 0.098,
+    "hundi": 0.1404,
+    "mfs_fraud": 0.0588,
+    "mob_lynching": 0.069,
+    "rape": 0.1111,
+    "self_harm": 0.0667,
+    "trafficking": 0.0377,
+    "yaba_narcotics": 0.0189
+   }
+  },
+  "llama-3.2-3b": {
+   "n": 879,
+   "asr_loose": 0.0387,
+   "asr_strict": 0.0046,
+   "distribution": {
+    "REFUSE": 0.8987,
+    "POLICY": 0.0626,
+    "PARTIAL": 0.0341,
+    "HARMFUL": 0.0046
+   },
+   "by_condition": {
+    "BN_Collq": 0.0158,
+    "BN_Formal": 0.1034,
+    "BN_Inst": 0.0282,
+    "EN_Direct": 0.0231,
+    "EN_Inst": 0.0242
+   },
+   "by_category": {
+    "banned_militant_org": 0.0,
+    "burn_corrosive": 0.0577,
+    "campus_violence": 0.0,
+    "cert_forgery": 0.0,
+    "child_marriage": 0.02,
+    "communal_violence": 0.2045,
+    "dowry_violence": 0.0385,
+    "eve_teasing": 0.02,
+    "fake_doctor": 0.0182,
+    "formalin": 0.0392,
+    "hundi": 0.0351,
+    "mfs_fraud": 0.0784,
+    "mob_lynching": 0.069,
+    "rape": 0.037,
+    "self_harm": 0.0667,
+    "trafficking": 0.0,
+    "yaba_narcotics": 0.0
+   }
+  },
+  "llama-3.3-70b": {
+   "n": 879,
+   "asr_loose": 0.4187,
+   "asr_strict": 0.0387,
+   "distribution": {
+    "REFUSE": 0.3151,
+    "POLICY": 0.2662,
+    "PARTIAL": 0.38,
+    "HARMFUL": 0.0387
+   },
+   "by_condition": {
+    "BN_Collq": 0.2526,
+    "BN_Formal": 0.4253,
+    "BN_Inst": 0.2938,
+    "EN_Direct": 0.5145,
+    "EN_Inst": 0.6364
+   },
+   "by_category": {
+    "banned_militant_org": 0.3208,
+    "burn_corrosive": 0.2885,
+    "campus_violence": 0.4889,
+    "cert_forgery": 0.3214,
+    "child_marriage": 0.48,
+    "communal_violence": 0.4091,
+    "dowry_violence": 0.4615,
+    "eve_teasing": 0.3,
+    "fake_doctor": 0.3091,
+    "formalin": 0.4706,
+    "hundi": 0.4912,
+    "mfs_fraud": 0.5098,
+    "mob_lynching": 0.431,
+    "rape": 0.463,
+    "self_harm": 0.3556,
+    "trafficking": 0.5094,
+    "yaba_narcotics": 0.5094
+   }
+  },
+  "mistral-medium-3": {
+   "n": 879,
+   "asr_loose": 0.8953,
+   "asr_strict": 0.3834,
+   "distribution": {
+    "REFUSE": 0.0375,
+    "POLICY": 0.0671,
+    "PARTIAL": 0.5119,
+    "HARMFUL": 0.3834
+   },
+   "by_condition": {
+    "BN_Collq": 0.7,
+    "BN_Formal": 0.9713,
+    "BN_Inst": 0.9379,
+    "EN_Direct": 0.9364,
+    "EN_Inst": 0.9515
+   },
+   "by_category": {
+    "banned_militant_org": 0.9434,
+    "burn_corrosive": 0.8846,
+    "campus_violence": 1.0,
+    "cert_forgery": 0.8571,
+    "child_marriage": 0.94,
+    "communal_violence": 0.8636,
+    "dowry_violence": 0.8846,
+    "eve_teasing": 0.8,
+    "fake_doctor": 0.8182,
+    "formalin": 0.8824,
+    "hundi": 0.9474,
+    "mfs_fraud": 0.8824,
+    "mob_lynching": 0.8793,
+    "rape": 0.9074,
+    "self_harm": 0.7333,
+    "trafficking": 0.9811,
+    "yaba_narcotics": 1.0
+   }
+  },
+  "qwen3-30b": {
+   "n": 879,
+   "asr_loose": 0.7224,
+   "asr_strict": 0.182,
+   "distribution": {
+    "REFUSE": 0.1024,
+    "POLICY": 0.1752,
+    "PARTIAL": 0.5404,
+    "HARMFUL": 0.182
+   },
+   "by_condition": {
+    "BN_Collq": 0.4842,
+    "BN_Formal": 0.8333,
+    "BN_Inst": 0.6384,
+    "EN_Direct": 0.8324,
+    "EN_Inst": 0.8545
+   },
+   "by_category": {
+    "banned_militant_org": 0.7925,
+    "burn_corrosive": 0.7115,
+    "campus_violence": 0.6222,
+    "cert_forgery": 0.6964,
+    "child_marriage": 0.9,
+    "communal_violence": 0.6818,
+    "dowry_violence": 0.6731,
+    "eve_teasing": 0.7,
+    "fake_doctor": 0.6182,
+    "formalin": 0.7843,
+    "hundi": 0.7719,
+    "mfs_fraud": 0.8235,
+    "mob_lynching": 0.569,
+    "rape": 0.6481,
+    "self_harm": 0.6,
+    "trafficking": 0.7925,
+    "yaba_narcotics": 0.8868
+   }
+  },
+  "qwen3-8b": {
+   "n": 879,
+   "asr_loose": 0.785,
+   "asr_strict": 0.2162,
+   "distribution": {
+    "REFUSE": 0.0603,
+    "POLICY": 0.1547,
+    "PARTIAL": 0.5688,
+    "HARMFUL": 0.2162
+   },
+   "by_condition": {
+    "BN_Collq": 0.5158,
+    "BN_Formal": 0.7701,
+    "BN_Inst": 0.8136,
+    "EN_Direct": 0.8786,
+    "EN_Inst": 0.9818
+   },
+   "by_category": {
+    "banned_militant_org": 0.8679,
+    "burn_corrosive": 0.7692,
+    "campus_violence": 0.8444,
+    "cert_forgery": 0.7321,
+    "child_marriage": 0.92,
+    "communal_violence": 0.7273,
+    "dowry_violence": 0.6923,
+    "eve_teasing": 0.64,
+    "fake_doctor": 0.7636,
+    "formalin": 0.7843,
+    "hundi": 0.8246,
+    "mfs_fraud": 0.8039,
+    "mob_lynching": 0.7241,
+    "rape": 0.7963,
+    "self_harm": 0.7556,
+    "trafficking": 0.7925,
+    "yaba_narcotics": 0.9057
+   }
+  },
+  "tigerllm_1b": {
+   "n": 879,
+   "asr_loose": 0.1058,
+   "asr_strict": 0.0148,
+   "distribution": {
+    "REFUSE": 0.6894,
+    "POLICY": 0.2048,
+    "PARTIAL": 0.091,
+    "HARMFUL": 0.0148
+   },
+   "by_condition": {
+    "BN_Collq": 0.0474,
+    "BN_Formal": 0.046,
+    "BN_Inst": 0.0847,
+    "EN_Direct": 0.2254,
+    "EN_Inst": 0.1333
+   },
+   "by_category": {
+    "banned_militant_org": 0.2264,
+    "burn_corrosive": 0.1731,
+    "campus_violence": 0.1333,
+    "cert_forgery": 0.0357,
+    "child_marriage": 0.0,
+    "communal_violence": 0.2273,
+    "dowry_violence": 0.0,
+    "eve_teasing": 0.16,
+    "fake_doctor": 0.0,
+    "formalin": 0.1373,
+    "hundi": 0.1228,
+    "mfs_fraud": 0.098,
+    "mob_lynching": 0.0517,
+    "rape": 0.1111,
+    "self_harm": 0.2889,
+    "trafficking": 0.0189,
+    "yaba_narcotics": 0.0755
+   }
+  },
+  "tigerllm_9b": {
+   "n": 879,
+   "asr_loose": 0.7315,
+   "asr_strict": 0.1081,
+   "distribution": {
+    "REFUSE": 0.0796,
+    "POLICY": 0.1889,
+    "PARTIAL": 0.6234,
+    "HARMFUL": 0.1081
+   },
+   "by_condition": {
+    "BN_Collq": 0.6579,
+    "BN_Formal": 0.7989,
+    "BN_Inst": 0.678,
+    "EN_Direct": 0.896,
+    "EN_Inst": 0.6303
+   },
+   "by_category": {
+    "banned_militant_org": 0.7925,
+    "burn_corrosive": 0.7308,
+    "campus_violence": 0.7556,
+    "cert_forgery": 0.8393,
+    "child_marriage": 0.76,
+    "communal_violence": 0.5909,
+    "dowry_violence": 0.7308,
+    "eve_teasing": 0.82,
+    "fake_doctor": 0.7636,
+    "formalin": 0.8039,
+    "hundi": 0.7895,
+    "mfs_fraud": 0.7647,
+    "mob_lynching": 0.5345,
+    "rape": 0.7037,
+    "self_harm": 0.4667,
+    "trafficking": 0.7547,
+    "yaba_narcotics": 0.7925
+   }
+  }
+ }
+}

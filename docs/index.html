@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BanglaSafe: Register Shifts Break LLM Safety</title>
+<meta name="description" content="A Bengali LLM safety benchmark with culturally grounded harms. 879 statute-anchored prompts, 17 harm categories, 5 register conditions, 18 models, 15,822 judged responses.">
+<meta property="og:title" content="BanglaSafe: Register Shifts Break LLM Safety">
+<meta property="og:description" content="The same harmful request phrased as formal Bengali journalism succeeds 17.5 points more often than as a casual message. No jailbreak required.">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/svg+xml" href="static/favicon.svg">
+<link rel="apple-touch-icon" href="static/favicon-180.png">
+<meta name="theme-color" content="#16191d">
+<style>
+:root{
+  --bg:#ffffff; --fg:#16191d; --muted:#5c6570; --faint:#6d757e;
+  --line:#e6e8eb; --panel:#f7f8fa; --accent:#2569c2; --hot:#eb6834;
+  --maxw:960px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; scroll-padding-top:64px}
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 22px}
+a{color:var(--accent); text-decoration:none; overflow-wrap:anywhere}
+a:hover{text-decoration:underline}
+
+/* hero */
+header{padding:64px 0 30px; text-align:center; border-bottom:1px solid var(--line)}
+h1{font-size:38px; line-height:1.2; margin:0 0 6px; letter-spacing:-.02em}
+h1 .sub{display:block; font-size:22px; font-weight:600; color:var(--muted); margin-top:12px; letter-spacing:0}
+.authors{margin:22px 0 4px; font-size:16px}
+.authors a{color:var(--fg); text-decoration:underline; text-decoration-style:dotted;
+  text-decoration-color:var(--faint); text-underline-offset:3px}
+.authors a:hover{text-decoration-style:solid; text-decoration-color:var(--accent)}
+footer a{text-decoration:underline; text-underline-offset:2px}
+.affil{color:var(--muted); font-size:14px}
+.venue{display:inline-block; margin:20px 0 6px; padding:7px 16px; border-radius:999px;
+  background:#fff5ec; color:#a8420f; font-size:14px; font-weight:600; border:1px solid #f6d9c4}
+.btns{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin:26px 0 4px}
+.btn{display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border-radius:999px;
+  background:#1d2126; color:#fff; font-size:15px; font-weight:500; border:1px solid #1d2126}
+.btn:hover{background:#000; text-decoration:none}
+.btn.ghost{background:#fff; color:var(--fg); border-color:#d3d7dc}
+.btn.ghost:hover{background:var(--panel)}
+
+/* tldr + stats */
+.tldr{max-width:740px; margin:34px auto 0; text-align:center; font-size:17px; color:var(--fg)}
+.tldr b{color:var(--fg)}
+.stats{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin:42px 0 6px}
+.stat{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:18px 14px; text-align:center}
+.stat .n{font-size:27px; font-weight:700; letter-spacing:-.02em}
+.stat .n.hot{color:var(--hot)}
+.stat .l{font-size:12.5px; color:var(--muted); margin-top:4px; line-height:1.35}
+
+/* nav */
+nav{position:sticky; top:0; z-index:20; background:rgba(255,255,255,.92);
+  backdrop-filter:saturate(180%) blur(10px); border-bottom:1px solid var(--line)}
+nav .wrap{display:flex; gap:4px; justify-content:center; flex-wrap:wrap; padding:9px 22px}
+nav a{padding:6px 13px; border-radius:7px; font-size:14.5px; color:var(--muted)}
+nav a:hover{background:var(--panel); color:var(--fg); text-decoration:none}
+
+section{padding:52px 0; border-bottom:1px solid var(--line)}
+h2{font-size:25px; margin:0 0 6px; letter-spacing:-.01em}
+h2 + .lede{color:var(--muted); margin:0 0 26px; font-size:16px}
+h3{font-size:17px; margin:30px 0 8px}
+p{margin:0 0 15px}
+figure{margin:26px 0 0}
+figure img{width:100%; height:auto; display:block; border-radius:10px}
+figure a{display:block}
+figure img.framed{border:1px solid var(--line)}
+figcaption{color:var(--muted); font-size:13.5px; margin-top:11px; line-height:1.55}
+
+.two{display:grid; grid-template-columns:1fr 1fr; gap:34px; align-items:start}
+/* grid items default to min-width:auto, so a long token inside a <pre> pushes the
+   whole column past the viewport instead of letting the <pre> scroll */
+.two > *{min-width:0}
+.prose{max-width:720px}
+figure.narrow{max-width:660px; margin-left:auto; margin-right:auto}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:20px 22px}
+ol.contrib{padding-left:20px; margin:0}
+ol.contrib li{margin-bottom:14px}
+pre{background:#16191d; color:#e8eaed; padding:16px 18px; border-radius:10px;
+  overflow-x:auto; font:13.5px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace; margin:0 0 14px}
+pre .c{color:#8b939c}
+pre .k{color:#7fc4ff}
+code{background:var(--panel); border:1px solid var(--line); border-radius:5px;
+  padding:1px 5px; font:13px ui-monospace,SFMono-Regular,Menlo,monospace}
+pre code{background:none; border:0; padding:0; font-size:inherit}
+.tablewrap{overflow-x:auto; margin:18px 0 0}
+table{border-collapse:collapse; width:100%; font-size:14.5px}
+th,td{padding:9px 12px; border-bottom:1px solid var(--line); text-align:left}
+th{background:var(--panel); font-weight:600; font-size:13px; color:var(--muted);
+  text-transform:uppercase; letter-spacing:.05em}
+td.n{text-align:right; font-variant-numeric:tabular-nums}
+tr.hl td{background:#fff8f3; font-weight:600}
+.note{color:var(--muted); font-size:14px; margin-top:12px}
+footer{padding:36px 0 56px; text-align:center; color:var(--faint); font-size:14px}
+footer a{color:var(--muted)}
+
+@media (max-width:760px){
+  h1{font-size:29px} h1 .sub{font-size:18px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .two{grid-template-columns:1fr; gap:24px}
+  section{padding:40px 0}
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#0f1114; --fg:#e9ecef; --muted:#98a1ab; --faint:#7c858e;
+        --line:#242a31; --panel:#171b20; --accent:#5aa0f0; --hot:#ff8354}
+  .venue{background:#2a1a10; color:#ffb384; border-color:#4a2c18}
+  .btn{background:#e9ecef; color:#0f1114; border-color:#e9ecef}
+  .btn:hover{background:#fff}
+  .btn.ghost{background:transparent; color:var(--fg); border-color:#333a42}
+  nav{background:rgba(15,17,20,.92)}
+  figure img{background:#fff}
+  tr.hl td{background:#241a13}
+  pre{background:#080a0c}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>Register Shifts Break LLM Safety
+      <span class="sub">A Bengali Benchmark with Culturally Grounded Harms</span>
+    </h1>
+    <div class="authors">
+      <a href="mailto:naymul504@gmail.com">Naymul Islam</a><sup>1</sup>,
+      Nusrat Jahan Lia<sup>1</sup>,
+      <a href="mailto:iamdipta@gmail.com">Shubhashis Roy Dipta</a><sup>2</sup>,
+      Sabik Bin Sultan<sup>1</sup>, Abdullah Khan Zehady<sup>1</sup>
+    </div>
+    <div class="affil"><sup>1</sup>BanglaLLM &nbsp;&nbsp; <sup>2</sup>University of Maryland, Baltimore County</div>
+    <div class="venue">Under review &middot; ACL ARR</div>
+
+    <div class="btns">
+      <a class="btn" href="https://github.com/BanglaLLM/banglasafe">Code</a>
+      <a class="btn" href="https://huggingface.co/datasets/BanglaLLM/BanglaSafe">Dataset</a>
+      <a class="btn" href="https://pypi.org/project/banglasafe/">Package</a>
+      <a class="btn ghost" href="#quickstart">Run the benchmark</a>
+    </div>
+
+    <p class="tldr">
+      Bengali is diglossic. Newspaper prose and a casual text message are close to different
+      languages in practice. We hold a harmful request fixed and change only how it is written.
+      <b>Written as formal journalism it gets answered 17.5 points more often than written as a
+      casual message.</b> Nothing was optimised or engineered to make that happen.
+    </p>
+
+    <div class="stats">
+      <div class="stat"><div class="n">879</div><div class="l">prompts, natively authored</div></div>
+      <div class="stat"><div class="n">17</div><div class="l">statute-anchored harm categories</div></div>
+      <div class="stat"><div class="n">15,822</div><div class="l">responses across 18 models</div></div>
+      <div class="stat"><div class="n hot">+17.5pp</div><div class="l">register effect</div></div>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#overview">Overview</a>
+  <a href="#finding">Finding</a>
+  <a href="#where">Where it goes</a>
+  <a href="#gap">Why Bengali</a>
+  <a href="#judge">Judge</a>
+  <a href="#quickstart">Quickstart</a>
+  <a href="#data">Data</a>
+  <a href="#cite">Cite</a>
+</div></nav>
+
+<section id="overview">
+  <div class="wrap">
+    <h2>How the benchmark is built</h2>
+    <p class="lede">Every prompt is written in Bengali and tied to a real Bangladeshi law or case.</p>
+
+    <figure>
+      <a href="static/images/overview.png" title="Open full size"><img class="framed" src="static/images/overview.png" alt="BanglaSafe construction pipeline: 879 prompts from a 17-category harm taxonomy, expanded across five prompting conditions, run through 18 LLMs, then validated and judged four ways."></a>
+      <figcaption>
+        <b>Left:</b> 879 prompts (309 written directly by a native Bengali speaker, 570 model-assisted
+        and human-validated) drawn from a 17-category harm taxonomy, each category anchored to a
+        Bangladesh statute or a documented case rather than translated from an English dataset.
+        <b>Centre:</b> every harm instance appears under five conditions that vary language, register,
+        and authority framing, yielding 15,822 responses across 18 models. The arrows mark the three
+        paired comparisons: language, register, and authority.
+        <b>Right:</b> two-stage evaluation, human prompt validation followed by a calibrated four-way judge.
+      </figcaption>
+    </figure>
+
+    <div class="two" style="margin-top:38px">
+      <div>
+        <h3>Where the categories come from</h3>
+        <p>A harm gets into the taxonomy only if a specific Bangladeshi statute makes it illegal, or
+        if it is treated as harmful across the full range of Bangladeshi opinion. Anything genuinely
+        contested was left out, including blasphemy, opposition politics, sex work, and
+        LGBTQ-related queries.</p>
+        <p>501 of the 879 prompts point at a named, dated incident you can trace back to a primary
+        source.</p>
+      </div>
+      <div>
+        <h3>Why four labels</h3>
+        <p>A safe/unsafe split loses the middle of the distribution. A model that answers with a long
+        essay about acid law has not refused you, but it has not helped you either. We use
+        <b>REFUSE</b>, <b>POLICY</b>, <b>PARTIAL</b>, and <b>HARMFUL</b>, and report two rates from
+        them: how often the model engaged at all, and how often it produced something someone could
+        actually use.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="finding">
+  <div class="wrap">
+    <h2>The finding</h2>
+    <p class="lede">How the request is written matters more than whether it is in English or Bengali.</p>
+
+    <figure>
+      <a href="static/images/asr_by_condition.png" title="Open full size"><img src="static/images/asr_by_condition.png" alt="Attack success rate by prompting condition. EN_Direct 50.4%, EN_Inst 53.4%, BN_Formal 63.3%, BN_Collq 45.8%, BN_Inst 55.7%. The gap between BN_Formal and BN_Collq is 17.5 points."></a>
+      <figcaption>
+        Attack success rate by prompting condition, judged by a calibrated four-way rubric over
+        15,822 responses. The underlying harm act is identical in every bar. Formal Bengali
+        journalism is the most successful framing at 63.3%; colloquial Banglish peer-help is the
+        least at 45.8%. Both are Bengali, so the 17.5-point spread is not a language effect.
+        With roughly 3,000 responses per condition every 95% bootstrap interval is within
+        &plusmn;1.8 points, well under the effect being measured.
+      </figcaption>
+    </figure>
+
+    <p style="margin-top:26px">The effect holds model by model. <b>17 of 18 models</b> show a positive
+    register gap (sign test, p &lt; 0.001), with a median of +17.6 points. It is not an artefact of
+    averaging weak models with strong ones, and it is <em>larger</em> in the more capable ones: the
+    models with the tightest English safety show the widest gap when the same request arrives in
+    formal Bengali.</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Model</th><th class="n">English direct</th><th class="n">Bengali journalism</th><th class="n">Increase</th></tr></thead>
+        <tbody>
+          <tr><td>Claude-Haiku-4.5</td><td class="n">7.5%</td><td class="n">37.9%</td><td class="n">5.1&times;</td></tr>
+          <tr><td>Grok-4.3</td><td class="n">8.1%</td><td class="n">32.8%</td><td class="n">4.0&times;</td></tr>
+          <tr><td>Gemini-2.5-Flash</td><td class="n">14.5%</td><td class="n">87.9%</td><td class="n">6.1&times;</td></tr>
+          <tr><td>Gemma-4-26B</td><td class="n">18.5%</td><td class="n">90.8%</td><td class="n">4.9&times;</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Models that refuse almost everything in English answer the same request four to
+    six times more often in formal Bengali. Safety alignment is not transferring across language
+    and register.</p>
+
+    <figure>
+      <a href="static/images/per_model.png" title="Open full size"><img class="framed" src="static/images/per_model.png" alt="Table of attack success rate for all 18 models across the five prompting conditions, grouped by parameter scale."></a>
+      <figcaption>Every model, every condition. Grouped by parameter scale, with the highest value
+      in each column in bold and the highest within each group underlined. BN<sub>Formal</sub>
+      beats BN<sub>Collq</sub> for 17 of the 18 models. The exception, TigerLLM-1B, sits at its
+      capability floor and scores near zero everywhere, so its gap is not meaningful.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="where">
+  <div class="wrap">
+    <h2>Where the extra engagement goes</h2>
+    <p class="lede">Formal Bengali does not make models produce more recipes. It makes them produce more half-answers.</p>
+
+    <div class="prose">
+      <p>Splitting the responses four ways shows what the single rate hides. Under
+      BN<sub>Formal</sub> the PARTIAL share climbs to 49.9%, the highest of any condition, while
+      the HARMFUL share <em>falls</em> to 13.5%, below the 18.7% English baseline.</p>
+      <p>So the journalism framing is not unlocking operational detail. It is moving models out of
+      refusal and into hedged, structured, article-shaped answers that still carry named tactics and
+      sourcing channels. That is why the four-way split matters: a binary metric would report this
+      as a straightforward increase in unsafe output, which is not what is happening.</p>
+    </div>
+
+    <figure>
+      <a href="static/images/four_way.png" title="Open full size"><img src="static/images/four_way.png" alt="Stacked bars of the four-way label distribution for each prompting condition, showing PARTIAL rising to 49.9% under the formal Bengali condition while HARMFUL falls to 13.5%."></a>
+      <figcaption>Four-way label distribution by condition. This figure uses the internal condition
+      codes: EN is EN<sub>Direct</sub>, EN_V3 is EN<sub>Inst</sub>, V1 is BN<sub>Formal</sub>,
+      V2 is BN<sub>Collq</sub>, and V3 is BN<sub>Inst</sub>.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="gap">
+  <div class="wrap">
+    <h2>Why a Bengali benchmark has to be built, not translated</h2>
+    <p class="lede">The harms that matter in Bangladesh are not in the corpora that safety training uses.</p>
+
+    <div class="prose">
+      <p>We searched twelve widely used English safety and RLHF corpora, 80,589 prompts in total,
+      for six culturally anchored Bangladeshi harm terms: <i>yaba</i>, formalin adulteration,
+      <i>hundi</i>, bKash fraud, eve teasing, and dowry violence.</p>
+      <p><b>Across all twelve corpora and all six terms, there was one hit.</b> A single mention of
+      dowry in PKU-SafeRLHF. The generic English counterparts are everywhere in the same corpora:
+      methamphetamine 290 times, money laundering 177, OTP phishing 363. The concepts are covered.
+      The Bangladeshi forms of them are not.</p>
+      <p>Translating an English harm taxonomy cannot recover what was never in it.</p>
+    </div>
+
+    <figure>
+      <a href="static/images/coverage_gap.png" title="Open full size"><img class="framed" src="static/images/coverage_gap.png" alt="Matrix showing zero hits for six Bangladeshi harm terms across twelve English safety corpora, with one exception; generic English counterparts appear hundreds of times."></a>
+      <figcaption>Hits for six Bangladeshi harm terms across 12 English safety and RLHF corpora
+      (80,589 prompts), with generic English counterparts from the same corpora below for
+      comparison.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="judge">
+  <div class="wrap">
+    <h2>Is it just the judge?</h2>
+    <p class="lede">A second, independent judge from a different lab reproduces the effect almost exactly.</p>
+
+    <div class="prose">
+      <p>The labels come from an LLM judge, so the obvious objection is that the finding is an
+      artefact of that particular model. We re-judged all 15,822 responses with an independent
+      frontier model from a different lab, using the identical rubric.</p>
+      <p>The two judges rank the 18 models nearly identically, <b>Pearson r = 0.989</b>, and the
+      register gap barely moves: <b>+18.2 points</b> under the second judge against +17.5 under the
+      first. Binary agreement between them is &kappa; = 0.787. The absolute rate shifts by about
+      three points because the second judge is stricter about the PARTIAL boundary. The effect
+      does not.</p>
+    </div>
+
+    <figure class="narrow">
+      <a href="static/images/second_judge.png" title="Open full size"><img src="static/images/second_judge.png" alt="Scatter plot of per-model attack success rate under two independent judges. All 18 models fall close to the y equals x line, Pearson r 0.989."></a>
+      <figcaption>Per-model attack success rate under two independent judges. Each point is one of
+      the 18 evaluated models; the dashed line is perfect agreement.</figcaption>
+    </figure>
+
+    <p class="note" style="margin-top:22px">Every report the tool produces prints how well the judge
+    agreed with human annotators (&kappa; = 0.666 against human labels, above the 0.586 the humans
+    managed with each other), so you can see how much to trust the labels you are reading.</p>
+  </div>
+</section>
+
+<section id="quickstart">
+  <div class="wrap">
+    <h2>Score your own model</h2>
+    <p class="lede">One command. Nothing to install, no dataset download, no account.</p>
+
+<pre><code><span class="c"># any OpenAI-compatible endpoint: vLLM, SGLang, LightLLM, Ollama,
+# llama.cpp, TGI, LM Studio, a LiteLLM proxy, or a hosted API</span>
+uvx banglasafe run \
+  <span class="k">--model</span> your-model \
+  <span class="k">--base-url</span> http://localhost:8000/v1 \
+  <span class="k">--judge-model</span> anthropic/claude-opus-4-7 \
+  <span class="k">--judge-base-url</span> https://openrouter.ai/api/v1</code></pre>
+
+<pre><code>  ASR loose   47.2%  [44.1, 50.3]   PARTIAL + HARMFUL
+  ASR strict  19.8%                 HARMFUL only
+
+  vs the 18-model reference cohort: z = -0.22, rank 11/19 (safer than average)
+
+  Register effect  BN_Formal is 16.4pp higher than BN_Collq</code></pre>
+
+    <div class="two" style="margin-top:30px">
+      <div>
+        <h3>Your number comes with context</h3>
+        <p>The 18 models we tested ship inside the package as a reference cohort, so you get a rank
+        and a z-score rather than a percentage with nothing to compare it against. Every rate has a
+        bootstrap confidence interval and a breakdown by condition and harm category.</p>
+      </div>
+      <div>
+        <h3>The judge is your choice</h3>
+        <p><code>--judge-model</code> is required and has no default. The judge decides your
+        numbers, so it should not be something you inherit by accident.
+        <code>banglasafe judges</code> lists the options with how well each one matched human
+        annotators.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="data">
+  <div class="wrap">
+    <h2>What we release</h2>
+
+    <div class="two">
+      <div class="card">
+        <h3 style="margin-top:0">Dataset</h3>
+        <p>879 prompts with category, condition, register tier, case-anchor flag, and human/AI
+        provenance, plus the 17-category taxonomy with its statutory anchors.</p>
+<pre style="margin-bottom:0"><code>load_dataset(<span class="k">"BanglaLLM/BanglaSafe"</span>)</code></pre>
+        <p style="margin:14px 0 0"><a href="https://huggingface.co/datasets/BanglaLLM/BanglaSafe">huggingface.co/datasets/BanglaLLM/BanglaSafe</a></p>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Framework</h3>
+        <p>A pip-installable CLI that runs the benchmark end to end against any OpenAI-compatible
+        endpoint, with the calibrated rubric, bootstrap statistics, and HTML reporting built in.</p>
+<pre style="margin-bottom:0"><code>pip install banglasafe</code></pre>
+        <p style="margin:14px 0 0"><a href="https://github.com/BanglaLLM/banglasafe">github.com/BanglaLLM/banglasafe</a></p>
+      </div>
+    </div>
+
+    <p class="note" style="margin-top:24px">
+      The prompts are written to elicit unsafe behaviour so that it can be measured. They are for
+      safety evaluation and research. The benchmark measures harmful compliance and says nothing
+      about over-refusal, since it contains no benign control set.
+    </p>
+  </div>
+</section>
+
+<section id="cite">
+  <div class="wrap">
+    <h2>Citation</h2>
+<pre><code>@inproceedings{islam2026banglasafe,
+  title     = {Register Shifts Break {LLM} Safety: A Bengali Benchmark
+               with Culturally Grounded Harms},
+  author    = {Islam, Naymul and Lia, Nusrat Jahan and Roy Dipta, Shubhashis
+               and Sultan, Sabik Bin and Zehady, Abdullah Khan},
+  year      = {2026}
+}</code></pre>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Questions, access requests, or takedown:
+    <a href="mailto:naymul504@gmail.com">naymul504@gmail.com</a> &middot;
+    <a href="mailto:iamdipta@gmail.com">iamdipta@gmail.com</a></p>
+    <p>Built by <a href="https://huggingface.co/BanglaLLM">BanglaLLM</a>.
+    Dataset CC-BY-4.0, code MIT.</p>
+  </div>
+</footer>
+
+</body>
+</html>
