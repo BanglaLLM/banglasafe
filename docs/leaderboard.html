@@ -73,21 +73,31 @@ h1{font-size:33px; line-height:1.2; margin:0 0 8px; letter-spacing:-.02em}
 .count{margin-left:auto; font-size:13.5px; color:var(--muted); padding-bottom:9px}
 
 /* table */
-/* overflow-x on the wrapper makes it the sticky containing block, which silently kills
-   the sticky header. The table fits intact at >=1200px, so only scroll below that. */
-.tablewrap{margin:0 0 6px}
-@media (max-width:1199px){ .tablewrap{overflow-x:auto} }
-table{border-collapse:collapse; width:100%; font-size:14px}
+/* The table always scrolls inside its own wrapper. Rank and Model stay pinned to the left
+   so you never lose track of which row a number belongs to, and the least load-bearing
+   columns drop out as the viewport narrows rather than all 12 sliding off the edge. */
+.tablewrap{margin:0 0 6px; overflow:auto; -webkit-overflow-scrolling:touch;
+  max-height:calc(100vh - 140px)}
+table{border-collapse:separate; border-spacing:0; width:100%; font-size:14px}
 th,td{padding:10px 9px; border-bottom:1px solid var(--line); text-align:left; white-space:nowrap}
-thead th{position:sticky; top:54px; z-index:5; background:var(--panel); font-weight:600; font-size:11.5px;
+/* the wrapper scrolls in both axes, so the header pins to it rather than to the viewport */
+thead th{position:sticky; top:0; z-index:5; background:var(--panel); font-weight:600; font-size:11.5px;
   color:var(--muted); text-transform:uppercase; letter-spacing:.05em; cursor:pointer; user-select:none}
+th[data-col="rank"], td[data-col="rank"]{position:sticky; left:0; z-index:3; width:42px;
+  min-width:42px; background:var(--bg)}
+th[data-col="model"], td[data-col="model"]{position:sticky; left:42px; z-index:3;
+  background:var(--bg); box-shadow:1px 0 0 var(--line)}
+thead th[data-col="rank"], thead th[data-col="model"]{z-index:6; background:var(--panel)}
+tbody tr:hover td[data-col="rank"], tbody tr:hover td[data-col="model"]{background:var(--panel)}
+.scrollhint{display:none; color:var(--faint); font-size:12.5px; margin:8px 0 0}
+.tablewrap.scrolls + .scrollhint{display:block}
 thead th.plain{cursor:default}
 thead th .arw{opacity:.32; margin-left:4px; font-size:10px}
 thead th[data-dir] .arw{opacity:1; color:var(--fg)}
 th.n,td.n{text-align:right}
 td.n{font-variant-numeric:tabular-nums}
 tbody tr:hover td{background:var(--panel)}
-td.rank{color:var(--faint); font-variant-numeric:tabular-nums; width:36px}
+td.rank{color:var(--faint); font-variant-numeric:tabular-nums}
 td.model{font-weight:600; white-space:nowrap}
 td.vendor{color:var(--muted); font-size:13px}
 .chip{display:inline-block; font-size:11px; font-weight:600; letter-spacing:.03em;
@@ -121,18 +131,26 @@ footer{padding:34px 0 56px; color:var(--faint); font-size:14px; border-top:1px s
 footer a{color:var(--muted)}
 footer p{max-width:var(--text)}
 
-@media (max-width:760px){
-  h1{font-size:26px}
-  header{padding:32px 0 4px}
-  .count{margin-left:0; padding-bottom:0}
-  .search{width:100%}
-  .ctl{flex:1 1 100%}
+/* drop the least load-bearing things first */
+@media (max-width:1120px){ .asrcell .ci{display:none} .asrcell{min-width:86px} }
+@media (max-width:980px){ th[data-col="vendor"], td[data-col="vendor"]{display:none} }
+@media (max-width:860px){ th[data-col="kind"], td[data-col="kind"]{display:none} }
+@media (max-width:720px){ th[data-col="strict"], td[data-col="strict"]{display:none} }
+@media (max-width:1000px){
   nav .wrap::before{display:none}
   .navlinks{flex-wrap:nowrap; justify-content:flex-start; overflow-x:auto;
     -webkit-overflow-scrolling:touch; scrollbar-width:none}
   .navlinks::-webkit-scrollbar{display:none}
   nav a{flex:0 0 auto; white-space:nowrap}
-  thead th{position:static}   /* wrapper scrolls here, so sticky cannot work anyway */
+}
+@media (max-width:760px){
+  h1{font-size:26px}
+  th,td{padding:9px 7px; font-size:13.5px}
+  thead th{font-size:11px}
+  header{padding:32px 0 4px}
+  .count{margin-left:0; padding-bottom:0}
+  .search{width:100%}
+  .ctl{flex:1 1 100%}
 }
 /* dark stays last so its same-specificity rules win */
 :root[data-theme="dark"]{
@@ -195,12 +213,13 @@ footer p{max-width:var(--text)}
     <div class="count" id="count"></div>
   </div>
 
-  <div class="tablewrap">
+  <div class="tablewrap" id="tablewrap">
     <table>
       <thead><tr id="head"></tr></thead>
       <tbody id="body"></tbody>
     </table>
   </div>
+  <p class="scrollhint">Scroll the table sideways for the remaining columns. Rank and model stay put.</p>
 
   <div class="foot">
     <p><b>ASR</b> is the share of responses the judge scored <code>PARTIAL</code> or
@@ -266,12 +285,12 @@ footer p{max-width:var(--text)}
   var CONDS=[];
 
   var COLS=[
-    {key:'rank',   label:'#',        cls:'rank',  sortable:false},
-    {key:'model',  label:'Model',    cls:'model'},
-    {key:'vendor', label:'Vendor',   cls:'vendor'},
-    {key:'kind',   label:'Type',     cls:''},
-    {key:'loose',  label:'ASR',      cls:'n', num:true},
-    {key:'strict', label:'Strict',   cls:'n', num:true}
+    {key:'rank',   label:'#',      col:'rank',   cls:'rank', sortable:false},
+    {key:'model',  label:'Model',  col:'model',  cls:'model'},
+    {key:'vendor', label:'Vendor', col:'vendor', cls:'vendor'},
+    {key:'kind',   label:'Type',   col:'kind',   cls:''},
+    {key:'loose',  label:'ASR',    col:'asr',    cls:'n', num:true},
+    {key:'strict', label:'Strict', col:'strict', cls:'n', num:true}
   ];
 
   function esc(s){return String(s).replace(/[&<>"]/g,function(c){
@@ -279,8 +298,8 @@ footer p{max-width:var(--text)}
 
   function columns(){
     return COLS.concat(CONDS.map(function(c){
-      return {key:'c:'+c, label:c.replace('_',' '), cls:'n', num:true};
-    })).concat([{key:'gap', label:'Gap', cls:'n', num:true}]);
+      return {key:'c:'+c, label:c.replace('_',' '), col:'cond', cls:'n', num:true};
+    })).concat([{key:'gap', label:'Gap', col:'gap', cls:'n', num:true}]);
   }
 
   function value(row,key){
@@ -306,7 +325,7 @@ footer p{max-width:var(--text)}
   function renderHead(){
     document.getElementById('head').innerHTML=columns().map(function(c){
       var on=sort.key===c.key;
-      return '<th class="'+c.cls+(c.sortable===false?' plain':'')+'"'
+      return '<th class="'+c.cls+(c.sortable===false?' plain':'')+'" data-col="'+c.col+'"'
         +(c.sortable===false?'':' data-key="'+c.key+'"')
         +(on?' data-dir="'+sort.dir+'"':'')
         +(on?' aria-sort="'+(sort.dir===1?'ascending':'descending')+'"':'')+'>'
@@ -328,20 +347,20 @@ footer p{max-width:var(--text)}
     document.getElementById('body').innerHTML=rs.map(function(r,i){
       var peak=CONDS.reduce(function(a,c){return r.conds[c]>r.conds[a]?c:a;}, CONDS[0]);
       var cells=[
-        '<td class="rank">'+(i+1)+'</td>',
-        '<td class="model">'+esc(r.model)+'</td>',
-        '<td class="vendor">'+esc(r.vendor)+'</td>',
-        '<td><span class="chip'+(r.kind==='closed'?' closed':'')+'">'
+        '<td class="rank" data-col="rank">'+(i+1)+'</td>',
+        '<td class="model" data-col="model">'+esc(r.model)+'</td>',
+        '<td class="vendor" data-col="vendor">'+esc(r.vendor)+'</td>',
+        '<td data-col="kind"><span class="chip'+(r.kind==='closed'?' closed':'')+'">'
           +(r.kind==='closed'?'closed':'open')+'</span></td>',
-        '<td class="n asrcell"><span class="fill" style="width:'+(r.loose/max*100).toFixed(1)+'%"></span>'
+        '<td class="n asrcell" data-col="asr"><span class="fill" style="width:'+(r.loose/max*100).toFixed(1)+'%"></span>'
           +'<span class="v">'+r.loose.toFixed(1)+'%</span>'
           +'<span class="ci">['+r.lo.toFixed(1)+', '+r.hi.toFixed(1)+']</span></td>',
-        '<td class="n">'+r.strict.toFixed(1)+'%</td>'
+        '<td class="n" data-col="strict">'+r.strict.toFixed(1)+'%</td>'
       ];
       CONDS.forEach(function(c){
-        cells.push('<td class="n'+(c===peak?' peak':'')+'">'+r.conds[c].toFixed(1)+'%</td>');
+        cells.push('<td class="n'+(c===peak?' peak':'')+'" data-col="cond">'+r.conds[c].toFixed(1)+'%</td>');
       });
-      cells.push('<td class="n gap'+(r.gap<=0?' neg':'')+'">'
+      cells.push('<td class="n gap'+(r.gap<=0?' neg':'')+'" data-col="gap">'
         +(r.gap>0?'+':'')+r.gap.toFixed(1)+'</td>');
       return '<tr>'+cells.join('')+'</tr>';
     }).join('');
@@ -352,7 +371,12 @@ footer p{max-width:var(--text)}
       +j.overall.toFixed(1)+'%';
   }
 
-  function render(){ renderHead(); renderBody(); }
+  function markScroll(){
+    var w=document.getElementById('tablewrap');
+    w.classList.toggle('scrolls', w.scrollWidth > w.clientWidth + 1);
+  }
+  function render(){ renderHead(); renderBody(); markScroll(); }
+  window.addEventListener('resize', markScroll);
 
   function wire(id, set){
     var el=document.getElementById(id);

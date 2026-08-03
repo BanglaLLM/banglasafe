@@ -139,18 +139,21 @@ footer a{color:var(--muted)}
 .counter:hover{opacity:.7}
 .counter img{display:inline-block; vertical-align:middle}
 
-@media (max-width:760px){
-  h1{font-size:29px} h1 .sub{font-size:18px}
-  .stats{grid-template-columns:repeat(2,1fr)}
-  .two{grid-template-columns:1fr; gap:24px}
-  section{padding:40px 0}
-  /* eight links wrap to three rows on a phone, which makes the sticky bar 135px
-     tall and pushes anchor targets underneath it. Scroll it sideways instead. */
+/* The nine links stop fitting on one row well before phone width; left to wrap they made
+   the sticky bar 95px at 900px and 135px on a phone, which pushed anchor targets under it.
+   One sideways-scrolling row instead, so the bar is always 55px and scroll-padding holds. */
+@media (max-width:1000px){
   nav .wrap::before{display:none}
   .navlinks{flex-wrap:nowrap; justify-content:flex-start; overflow-x:auto;
     -webkit-overflow-scrolling:touch; scrollbar-width:none}
   .navlinks::-webkit-scrollbar{display:none}
   nav a{flex:0 0 auto; white-space:nowrap}
+}
+@media (max-width:760px){
+  h1{font-size:29px} h1 .sub{font-size:18px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .two{grid-template-columns:1fr; gap:24px}
+  section{padding:40px 0}
 }
 /* dark stays last in the sheet so its same-specificity rules win the cascade */
 :root[data-theme="dark"]{
