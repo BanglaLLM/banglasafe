@@ -107,13 +107,12 @@ figcaption{color:var(--muted); font-size:15px; margin-top:11px; line-height:1.6}
 /* Body text used to wrap at five different lengths on one page: 78 characters inside
    .prose, 99 in the loose paragraphs and ledes, 112 in .note, 115 in figcaptions. The
    line-break rhythm changed every time you scrolled past a section. One measure now.
-   Text blocks are also centred, so the narrow text column and the wide figures share a
-   centre axis instead of the text hanging off the left with a dead gutter on the right. */
-section h2, section h3, section h2 + .lede, section .prose, section > .wrap > p,
-section .note, section figcaption, section ol.contrib, section table{
-  max-width:var(--text); margin-left:auto; margin-right:auto;
-}
-figure.narrow{max-width:660px; margin-left:auto; margin-right:auto}
+   Everything stays on the container's left edge; only the table is centred. */
+section h2 + .lede, section .prose, section > .wrap > p,
+section .note, section figcaption, section ol.contrib{max-width:var(--text)}
+/* the table is the one block that gets centred */
+section table{max-width:700px; margin-left:auto; margin-right:auto}
+figure.narrow{max-width:660px}
 .card{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:20px 22px}
 ol.contrib{padding-left:20px; margin:0}
 ol.contrib li{margin-bottom:14px}
