@@ -10,11 +10,22 @@
 <meta property="og:type" content="website">
 <link rel="icon" type="image/svg+xml" href="static/favicon.svg">
 <link rel="apple-touch-icon" href="static/favicon-180.png">
-<meta name="theme-color" content="#16191d">
+<meta name="theme-color" content="#faf7f1">
+<script>
+(function(){try{var t=localStorage.getItem('bs-theme');
+if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
 <style>
 :root{
-  --bg:#ffffff; --fg:#16191d; --muted:#5c6570; --faint:#6d757e;
-  --line:#e6e8eb; --panel:#f7f8fa; --accent:#2569c2; --hot:#eb6834;
+  /* cream is the default mode; dark is opt-in via the nav toggle */
+  --bg:#faf7f1; --fg:#1b1917; --muted:#655d51; --faint:#776e61;
+  --line:#e7dfd2; --panel:#f3eee4; --accent:#1f5fb4; --hot:#c4501c;
+  --navbg:rgba(250,247,241,.92);
+  --figbg:#ffffff;                       /* figures are white; the border makes that read as a card */
+  --btnbg:#1d2126; --btnfg:#ffffff; --btnline:#1d2126; --btnhover:#000;
+  --ghostbg:#ffffff; --ghostline:#ddd4c5;
+  --venuebg:#fdefe1; --venuefg:#9c3d0d; --venueline:#f0d6bb;
+  --hlrow:#fbeee1;
   --maxw:960px;
 }
 *{box-sizing:border-box}
@@ -39,12 +50,14 @@ h1 .sub{display:block; font-size:22px; font-weight:600; color:var(--muted); marg
 footer a{text-decoration:underline; text-underline-offset:2px}
 .affil{color:var(--muted); font-size:14px}
 .venue{display:inline-block; margin:20px 0 6px; padding:7px 16px; border-radius:999px;
-  background:#fff5ec; color:#a8420f; font-size:14px; font-weight:600; border:1px solid #f6d9c4}
+  background:var(--venuebg); color:var(--venuefg); font-size:14px; font-weight:600;
+  border:1px solid var(--venueline)}
 .btns{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin:26px 0 4px}
 .btn{display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border-radius:999px;
-  background:#1d2126; color:#fff; font-size:15px; font-weight:500; border:1px solid #1d2126}
-.btn:hover{background:#000; text-decoration:none}
-.btn.ghost{background:#fff; color:var(--fg); border-color:#d3d7dc}
+  background:var(--btnbg); color:var(--btnfg); font-size:15px; font-weight:500;
+  border:1px solid var(--btnline)}
+.btn:hover{background:var(--btnhover); text-decoration:none}
+.btn.ghost{background:var(--ghostbg); color:var(--fg); border-color:var(--ghostline)}
 .btn.ghost:hover{background:var(--panel)}
 /* icons inherit the button's text colour so they flip with the theme */
 .btn svg{width:16px; height:16px; flex:0 0 auto; display:block}
@@ -60,11 +73,20 @@ footer a{text-decoration:underline; text-underline-offset:2px}
 .stat .l{font-size:12.5px; color:var(--muted); margin-top:4px; line-height:1.35}
 
 /* nav */
-nav{position:sticky; top:0; z-index:20; background:rgba(255,255,255,.92);
+nav{position:sticky; top:0; z-index:20; background:var(--navbg);
   backdrop-filter:saturate(180%) blur(10px); border-bottom:1px solid var(--line)}
-nav .wrap{display:flex; gap:4px; justify-content:center; flex-wrap:wrap; padding:9px 22px}
+nav .wrap{display:flex; align-items:center; gap:10px; padding:9px 22px}
+/* mirrors the toggle's width on the left so the links stay optically centred */
+nav .wrap::before{content:''; flex:0 0 32px}
+.navlinks{flex:1 1 auto; min-width:0; display:flex; gap:4px; justify-content:center; flex-wrap:wrap}
 nav a{padding:6px 13px; border-radius:7px; font-size:14.5px; color:var(--muted)}
 nav a:hover{background:var(--panel); color:var(--fg); text-decoration:none}
+.themebtn{flex:0 0 auto; width:32px; height:32px; display:grid; place-items:center; padding:0;
+  border:1px solid var(--line); border-radius:8px; background:transparent;
+  color:var(--muted); cursor:pointer}
+.themebtn:hover{background:var(--panel); color:var(--fg)}
+.themebtn svg{width:16px; height:16px; display:block}
+.themebtn .to-light{display:none}
 
 section{padding:52px 0; border-bottom:1px solid var(--line)}
 h2{font-size:25px; margin:0 0 6px; letter-spacing:-.01em}
@@ -72,9 +94,9 @@ h2 + .lede{color:var(--muted); margin:0 0 26px; font-size:16px}
 h3{font-size:17px; margin:30px 0 8px}
 p{margin:0 0 15px}
 figure{margin:26px 0 0}
-figure img{width:100%; height:auto; display:block; border-radius:10px}
+figure img{width:100%; height:auto; display:block; border-radius:10px;
+  background:var(--figbg); border:1px solid var(--line)}
 figure a{display:block}
-figure img.framed{border:1px solid var(--line)}
 figcaption{color:var(--muted); font-size:13.5px; margin-top:11px; line-height:1.55}
 
 .two{display:grid; grid-template-columns:1fr 1fr; gap:34px; align-items:start}
@@ -98,11 +120,16 @@ table{border-collapse:collapse; width:100%; font-size:14.5px}
 th,td{padding:9px 12px; border-bottom:1px solid var(--line); text-align:left}
 th{background:var(--panel); font-weight:600; font-size:13px; color:var(--muted);
   text-transform:uppercase; letter-spacing:.05em}
-td.n{text-align:right; font-variant-numeric:tabular-nums}
-tr.hl td{background:#fff8f3; font-weight:600}
+th.n,td.n{text-align:right}
+td.n{font-variant-numeric:tabular-nums}
+tr.hl td{background:var(--hlrow); font-weight:600}
 .note{color:var(--muted); font-size:14px; margin-top:12px}
 footer{padding:36px 0 56px; text-align:center; color:var(--faint); font-size:14px}
 footer a{color:var(--muted)}
+/* visitor counter: present but deliberately quiet, brightens on hover */
+.counter{margin-top:26px; font-size:11px; opacity:.25; transition:opacity .2s}
+.counter:hover{opacity:.7}
+.counter img{display:inline-block; vertical-align:middle}
 
 @media (max-width:760px){
   h1{font-size:29px} h1 .sub{font-size:18px}
@@ -111,36 +138,45 @@ footer a{color:var(--muted)}
   section{padding:40px 0}
   /* eight links wrap to three rows on a phone, which makes the sticky bar 135px
      tall and pushes anchor targets underneath it. Scroll it sideways instead. */
-  nav .wrap{flex-wrap:nowrap; justify-content:flex-start; overflow-x:auto;
+  nav .wrap::before{display:none}
+  .navlinks{flex-wrap:nowrap; justify-content:flex-start; overflow-x:auto;
     -webkit-overflow-scrolling:touch; scrollbar-width:none}
-  nav .wrap::-webkit-scrollbar{display:none}
+  .navlinks::-webkit-scrollbar{display:none}
   nav a{flex:0 0 auto; white-space:nowrap}
 }
-@media (prefers-color-scheme:dark){
-  :root{--bg:#0f1114; --fg:#e9ecef; --muted:#98a1ab; --faint:#7c858e;
-        --line:#242a31; --panel:#171b20; --accent:#5aa0f0; --hot:#ff8354}
-  .venue{background:#2a1a10; color:#ffb384; border-color:#4a2c18}
-  .btn{background:#e9ecef; color:#0f1114; border-color:#e9ecef}
-  .btn:hover{background:#fff}
-  .btn.ghost{background:transparent; color:var(--fg); border-color:#333a42}
-  nav{background:rgba(15,17,20,.92)}
-  figure img{background:#fff}
-  tr.hl td{background:#241a13}
-  pre{background:#080a0c}
+/* dark stays last in the sheet so its same-specificity rules win the cascade */
+:root[data-theme="dark"]{
+  --bg:#0f1114; --fg:#e9ecef; --muted:#98a1ab; --faint:#7c858e;
+  --line:#242a31; --panel:#171b20; --accent:#5aa0f0; --hot:#ff8354;
+  --navbg:rgba(15,17,20,.92);
+  --figbg:#ffffff;
+  --btnbg:#e9ecef; --btnfg:#0f1114; --btnline:#e9ecef; --btnhover:#fff;
+  --ghostbg:transparent; --ghostline:#333a42;
+  --venuebg:#2a1a10; --venuefg:#ffb384; --venueline:#4a2c18;
+  --hlrow:#241a13;
 }
+:root[data-theme="dark"] .themebtn .to-dark{display:none}
+:root[data-theme="dark"] .themebtn .to-light{display:block}
+:root[data-theme="dark"] pre{background:#080a0c}
 </style>
 </head>
 <body>
 
 <nav><div class="wrap">
-  <a href="#overview">Overview</a>
-  <a href="#finding">Finding</a>
-  <a href="#where">Where it goes</a>
-  <a href="#gap">Why Bengali</a>
-  <a href="#judge">Judge</a>
-  <a href="#quickstart">Quickstart</a>
-  <a href="#data">Data</a>
-  <a href="#cite">Cite</a>
+  <div class="navlinks">
+    <a href="#overview">Overview</a>
+    <a href="#finding">Finding</a>
+    <a href="#where">Where it goes</a>
+    <a href="#gap">Why Bengali</a>
+    <a href="#judge">Judge</a>
+    <a href="#quickstart">Quickstart</a>
+    <a href="#data">Data</a>
+    <a href="#cite">Cite</a>
+  </div>
+  <button class="themebtn" type="button" id="themebtn" aria-label="Switch to dark mode" title="Switch to dark mode">
+    <svg class="to-dark" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    <svg class="to-light" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2 12h2M20 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+  </button>
 </div></nav>
 
 <header>
@@ -151,7 +187,7 @@ footer a{color:var(--muted)}
     <div class="authors">
       <a href="mailto:naymul504@gmail.com">Naymul Islam</a><sup>1</sup>,
       Nusrat Jahan Lia<sup>1</sup>,
-      <a href="mailto:iamdipta@gmail.com">Shubhashis Roy Dipta</a><sup>2</sup>,
+      <a href="mailto:sroydip1@umbc.edu">Shubhashis Roy Dipta</a><sup>2</sup>,
       Sabik Bin Sultan<sup>1</sup>, Abdullah Khan Zehady<sup>1</sup>
     </div>
     <div class="affil"><sup>1</sup>BanglaLLM &nbsp;&nbsp; <sup>2</sup>University of Maryland, Baltimore County</div>
@@ -437,11 +473,45 @@ uvx banglasafe run \
   <div class="wrap">
     <p>Questions, access requests, or takedown:
     <a href="mailto:naymul504@gmail.com">naymul504@gmail.com</a> &middot;
-    <a href="mailto:iamdipta@gmail.com">iamdipta@gmail.com</a></p>
+    <a href="mailto:sroydip1@umbc.edu">sroydip1@umbc.edu</a></p>
     <p>Built by <a href="https://huggingface.co/BanglaLLM">BanglaLLM</a>.
     Dataset CC-BY-4.0, code MIT.</p>
+
+    <div class="counter">
+<!-- Default Statcounter code for BanglaSafe https://banglallm.github.io/banglasafe/ -->
+<script type="text/javascript">
+var sc_project=13339649;
+var sc_invisible=0;
+var sc_security="6d36ce81";
+var scJsHost = "https://";
+document.write("<sc"+"ript type='text/javascript' src='" + scJsHost+
+"statcounter.com/counter/counter.js'></"+"script>");
+</script>
+<noscript><div class="statcounter"><a title="Web Analytics Made Easy - Statcounter" href="https://statcounter.com/" target="_blank"><img class="statcounter" src="https://c.statcounter.com/13339649/0/6d36ce81/0/" alt="Web Analytics Made Easy - Statcounter" referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
+<!-- End of Statcounter Code -->
+    </div>
   </div>
 </footer>
+
+<script>
+(function(){
+  var root = document.documentElement, btn = document.getElementById('themebtn');
+  var meta = document.querySelector('meta[name="theme-color"]');
+  function sync(){
+    var dark = root.getAttribute('data-theme') === 'dark';
+    var s = dark ? 'Switch to light mode' : 'Switch to dark mode';
+    btn.setAttribute('aria-label', s); btn.title = s;
+    if (meta) meta.setAttribute('content', dark ? '#0f1114' : '#faf7f1');
+  }
+  btn.addEventListener('click', function(){
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('bs-theme', next); } catch(e) {}
+    sync();
+  });
+  sync();
+})();
+</script>
 
 </body>
 </html>
