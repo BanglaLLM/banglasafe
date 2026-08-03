@@ -108,10 +108,21 @@ figcaption{color:var(--muted); font-size:15px; margin-top:11px; line-height:1.6}
    .prose, 99 in the loose paragraphs and ledes, 112 in .note, 115 in figcaptions. The
    line-break rhythm changed every time you scrolled past a section. One measure now.
    Everything stays on the container's left edge; only the table is centred. */
-section h2 + .lede, section .prose, section > .wrap > p,
+/* h2/h3 need the width cap too: margin:auto cannot centre a block that is already
+   full-width, which left the headings on the left edge while their own text was centred */
+section h2, section h3, section h2 + .lede, section .prose, section > .wrap > p,
 section .note, section figcaption, section ol.contrib{max-width:var(--text)}
-/* the table is the one block that gets centred */
+/* Text sits on the same centre line as the table and the figures, so a section does not
+   read as a left-hung column beside a centred block. #overview is left alone: its
+   left-aligned heading over the full-width pipeline figure is the version Naymul kept. */
+section:not(#overview) h2, section:not(#overview) h3,
+section:not(#overview) h2 + .lede, section:not(#overview) .prose,
+section:not(#overview) > .wrap > p, section:not(#overview) .note,
+section:not(#overview) figcaption, section:not(#overview) ol.contrib{
+  margin-left:auto; margin-right:auto;
+}
 section table{max-width:700px; margin-left:auto; margin-right:auto}
+section figure.narrow{margin-left:auto; margin-right:auto}
 figure.narrow{max-width:660px}
 .card{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:20px 22px}
 ol.contrib{padding-left:20px; margin:0}
