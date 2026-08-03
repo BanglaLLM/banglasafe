@@ -26,6 +26,7 @@ if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)
   --ghostbg:#ffffff; --ghostline:#ddd4c5;
   --bar:#cfe0f5; --barhot:#f7d9c8; --chip:#efe9dd; --hlrow:#fbeee1; --chiphot:#a8420f;
   --maxw:1200px;
+  --measure:66ch;   /* same body measure as index.html */
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth; scroll-padding-top:64px}
@@ -52,7 +53,7 @@ nav a.here{color:var(--fg); font-weight:600; background:var(--panel)}
 
 header{padding:46px 0 8px}
 h1{font-size:33px; line-height:1.2; margin:0 0 8px; letter-spacing:-.02em}
-.lede{color:var(--muted); font-size:16.5px; margin:0 0 4px; max-width:760px}
+.lede{color:var(--muted); font-size:16.5px; margin:0 0 4px; max-width:var(--measure)}
 .lede b{color:var(--fg)}
 
 /* controls */
@@ -104,20 +105,21 @@ td.peak{background:var(--hlrow); font-weight:700}
 td.gap{font-weight:700; font-variant-numeric:tabular-nums}
 td.gap.neg{color:var(--muted); font-weight:500}
 
-.foot{margin:26px 0 0; color:var(--muted); font-size:13.5px; line-height:1.65; max-width:880px}
+.foot{margin:26px 0 0; color:var(--muted); font-size:13.5px; line-height:1.65; max-width:var(--measure)}
 .foot p{margin:0 0 11px}
 .foot b{color:var(--fg)}
 .foot code{background:var(--panel); border:1px solid var(--line); border-radius:5px; padding:1px 5px;
   font:12.5px ui-monospace,SFMono-Regular,Menlo,monospace}
 .submit{margin:34px 0 0; background:var(--panel); border:1px solid var(--line);
-  border-radius:12px; padding:20px 22px; max-width:880px}
+  border-radius:12px; padding:20px 22px; max-width:760px}
 .submit h2{font-size:18px; margin:0 0 8px}
-.submit p{margin:0 0 12px; font-size:14.5px; color:var(--muted)}
+.submit p{margin:0 0 12px; font-size:14.5px; color:var(--muted); max-width:var(--measure)}
 pre{background:#16191d; color:#e8eaed; padding:14px 16px; border-radius:9px; overflow-x:auto;
   font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace; margin:0}
 pre .c{color:#8b939c}
 footer{padding:34px 0 56px; color:var(--faint); font-size:14px; border-top:1px solid var(--line); margin-top:44px}
 footer a{color:var(--muted)}
+footer p{max-width:var(--measure)}
 
 @media (max-width:760px){
   h1{font-size:26px}
