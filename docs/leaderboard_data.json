@@ -1,0 +1,709 @@
+{
+ "judges": {
+  "claude": {
+   "name": "Claude Opus 4.7",
+   "n": 15822,
+   "overall": 53.6,
+   "rows": [
+    {
+     "model": "Qwen3-8B",
+     "id": "qwen3-8b",
+     "kind": "open",
+     "vendor": "Alibaba",
+     "n": 879,
+     "loose": 78.5,
+     "lo": 75.8,
+     "hi": 81.2,
+     "strict": 21.6,
+     "conds": {
+      "EN_Direct": 87.9,
+      "EN_Inst": 98.2,
+      "BN_Formal": 77.0,
+      "BN_Collq": 51.6,
+      "BN_Inst": 81.4
+     },
+     "gap": 25.4
+    },
+    {
+     "model": "TigerLLM-9B-it",
+     "id": "tigerllm_9b",
+     "kind": "open",
+     "vendor": "TigerLLM",
+     "n": 879,
+     "loose": 73.2,
+     "lo": 70.2,
+     "hi": 76.0,
+     "strict": 10.8,
+     "conds": {
+      "EN_Direct": 89.6,
+      "EN_Inst": 63.0,
+      "BN_Formal": 79.9,
+      "BN_Collq": 65.8,
+      "BN_Inst": 67.8
+     },
+     "gap": 14.1
+    },
+    {
+     "model": "TigerLLM-1B",
+     "id": "tigerllm_1b",
+     "kind": "open",
+     "vendor": "TigerLLM",
+     "n": 879,
+     "loose": 10.6,
+     "lo": 8.6,
+     "hi": 12.6,
+     "strict": 1.5,
+     "conds": {
+      "EN_Direct": 22.5,
+      "EN_Inst": 13.3,
+      "BN_Formal": 4.6,
+      "BN_Collq": 4.7,
+      "BN_Inst": 8.5
+     },
+     "gap": -0.1
+    },
+    {
+     "model": "Llama-3.1-8B",
+     "id": "llama-3.1-8b",
+     "kind": "open",
+     "vendor": "Meta",
+     "n": 879,
+     "loose": 8.4,
+     "lo": 6.6,
+     "hi": 10.4,
+     "strict": 0.3,
+     "conds": {
+      "EN_Direct": 12.1,
+      "EN_Inst": 4.2,
+      "BN_Formal": 18.4,
+      "BN_Collq": 3.7,
+      "BN_Inst": 4.0
+     },
+     "gap": 14.7
+    },
+    {
+     "model": "Llama-3.2-3B",
+     "id": "llama-3.2-3b",
+     "kind": "open",
+     "vendor": "Meta",
+     "n": 879,
+     "loose": 3.9,
+     "lo": 2.6,
+     "hi": 5.2,
+     "strict": 0.5,
+     "conds": {
+      "EN_Direct": 2.3,
+      "EN_Inst": 2.4,
+      "BN_Formal": 10.3,
+      "BN_Collq": 1.6,
+      "BN_Inst": 2.8
+     },
+     "gap": 8.8
+    },
+    {
+     "model": "Gemma-3-27B",
+     "id": "gemma-3-27b",
+     "kind": "open",
+     "vendor": "Google",
+     "n": 879,
+     "loose": 74.2,
+     "lo": 71.2,
+     "hi": 77.0,
+     "strict": 17.5,
+     "conds": {
+      "EN_Direct": 90.8,
+      "EN_Inst": 61.2,
+      "BN_Formal": 86.8,
+      "BN_Collq": 70.5,
+      "BN_Inst": 61.6
+     },
+     "gap": 16.3
+    },
+    {
+     "model": "Gemma-3-12B",
+     "id": "gemma-3-12b",
+     "kind": "open",
+     "vendor": "Google",
+     "n": 879,
+     "loose": 68.6,
+     "lo": 65.5,
+     "hi": 71.7,
+     "strict": 15.4,
+     "conds": {
+      "EN_Direct": 89.0,
+      "EN_Inst": 44.2,
+      "BN_Formal": 81.0,
+      "BN_Collq": 70.5,
+      "BN_Inst": 57.1
+     },
+     "gap": 10.5
+    },
+    {
+     "model": "Gemma-4-26B",
+     "id": "gemma-4-26b",
+     "kind": "open",
+     "vendor": "Google",
+     "n": 879,
+     "loose": 61.5,
+     "lo": 58.4,
+     "hi": 64.8,
+     "strict": 6.6,
+     "conds": {
+      "EN_Direct": 18.5,
+      "EN_Inst": 47.9,
+      "BN_Formal": 90.8,
+      "BN_Collq": 68.4,
+      "BN_Inst": 80.2
+     },
+     "gap": 22.4
+    },
+    {
+     "model": "Qwen3-30B",
+     "id": "qwen3-30b",
+     "kind": "open",
+     "vendor": "Alibaba",
+     "n": 879,
+     "loose": 72.2,
+     "lo": 69.3,
+     "hi": 75.3,
+     "strict": 18.2,
+     "conds": {
+      "EN_Direct": 83.2,
+      "EN_Inst": 85.5,
+      "BN_Formal": 83.3,
+      "BN_Collq": 48.4,
+      "BN_Inst": 63.8
+     },
+     "gap": 34.9
+    },
+    {
+     "model": "DeepSeek-V3",
+     "id": "deepseek-v3",
+     "kind": "open",
+     "vendor": "DeepSeek",
+     "n": 879,
+     "loose": 88.4,
+     "lo": 86.2,
+     "hi": 90.4,
+     "strict": 39.4,
+     "conds": {
+      "EN_Direct": 89.6,
+      "EN_Inst": 97.0,
+      "BN_Formal": 95.4,
+      "BN_Collq": 73.2,
+      "BN_Inst": 88.7
+     },
+     "gap": 22.2
+    },
+    {
+     "model": "DeepSeek-V4-Pro",
+     "id": "deepseek-v4-pro",
+     "kind": "open",
+     "vendor": "DeepSeek",
+     "n": 879,
+     "loose": 74.6,
+     "lo": 71.8,
+     "hi": 77.5,
+     "strict": 45.7,
+     "conds": {
+      "EN_Direct": 56.6,
+      "EN_Inst": 88.5,
+      "BN_Formal": 84.5,
+      "BN_Collq": 62.6,
+      "BN_Inst": 82.5
+     },
+     "gap": 21.9
+    },
+    {
+     "model": "Llama-3.3-70B",
+     "id": "llama-3.3-70b",
+     "kind": "open",
+     "vendor": "Meta",
+     "n": 879,
+     "loose": 41.9,
+     "lo": 38.6,
+     "hi": 45.1,
+     "strict": 3.9,
+     "conds": {
+      "EN_Direct": 51.4,
+      "EN_Inst": 63.6,
+      "BN_Formal": 42.5,
+      "BN_Collq": 25.3,
+      "BN_Inst": 29.4
+     },
+     "gap": 17.3
+    },
+    {
+     "model": "Mistral-Medium-3",
+     "id": "mistral-medium-3",
+     "kind": "closed",
+     "vendor": "Mistral",
+     "n": 879,
+     "loose": 89.5,
+     "lo": 87.5,
+     "hi": 91.5,
+     "strict": 38.3,
+     "conds": {
+      "EN_Direct": 93.6,
+      "EN_Inst": 95.2,
+      "BN_Formal": 97.1,
+      "BN_Collq": 70.0,
+      "BN_Inst": 93.8
+     },
+     "gap": 27.1
+    },
+    {
+     "model": "GPT-4.1-mini",
+     "id": "gpt-4.1-mini",
+     "kind": "closed",
+     "vendor": "OpenAI",
+     "n": 879,
+     "loose": 79.3,
+     "lo": 76.6,
+     "hi": 81.9,
+     "strict": 20.5,
+     "conds": {
+      "EN_Direct": 57.8,
+      "EN_Inst": 97.0,
+      "BN_Formal": 91.4,
+      "BN_Collq": 65.3,
+      "BN_Inst": 87.0
+     },
+     "gap": 26.1
+    },
+    {
+     "model": "Gemini-2.5-Flash",
+     "id": "gemini-2.5-flash",
+     "kind": "closed",
+     "vendor": "Google",
+     "n": 879,
+     "loose": 57.8,
+     "lo": 54.5,
+     "hi": 61.1,
+     "strict": 12.3,
+     "conds": {
+      "EN_Direct": 14.5,
+      "EN_Inst": 35.2,
+      "BN_Formal": 87.9,
+      "BN_Collq": 70.0,
+      "BN_Inst": 78.5
+     },
+     "gap": 17.9
+    },
+    {
+     "model": "GPT-5-mini",
+     "id": "gpt-5-mini",
+     "kind": "closed",
+     "vendor": "OpenAI",
+     "n": 879,
+     "loose": 41.4,
+     "lo": 38.1,
+     "hi": 44.6,
+     "strict": 3.4,
+     "conds": {
+      "EN_Direct": 32.4,
+      "EN_Inst": 50.3,
+      "BN_Formal": 38.5,
+      "BN_Collq": 29.5,
+      "BN_Inst": 57.6
+     },
+     "gap": 9.0
+    },
+    {
+     "model": "Grok-4.3",
+     "id": "grok-4.3",
+     "kind": "closed",
+     "vendor": "xAI",
+     "n": 879,
+     "loose": 24.2,
+     "lo": 21.4,
+     "hi": 27.2,
+     "strict": 3.9,
+     "conds": {
+      "EN_Direct": 8.1,
+      "EN_Inst": 14.5,
+      "BN_Formal": 32.8,
+      "BN_Collq": 29.5,
+      "BN_Inst": 35.0
+     },
+     "gap": 3.3
+    },
+    {
+     "model": "Claude-Haiku-4.5",
+     "id": "claude-haiku-4.5",
+     "kind": "closed",
+     "vendor": "Anthropic",
+     "n": 879,
+     "loose": 17.1,
+     "lo": 14.6,
+     "hi": 19.6,
+     "strict": 5.5,
+     "conds": {
+      "EN_Direct": 7.5,
+      "EN_Inst": 0.6,
+      "BN_Formal": 37.9,
+      "BN_Collq": 14.7,
+      "BN_Inst": 23.7
+     },
+     "gap": 23.2
+    }
+   ]
+  },
+  "gemini": {
+   "name": "Gemini 3.1 Pro",
+   "n": 15794,
+   "overall": 50.0,
+   "rows": [
+    {
+     "model": "Qwen3-8B",
+     "id": "qwen3-8b",
+     "kind": "open",
+     "vendor": "Alibaba",
+     "n": 879,
+     "loose": 80.4,
+     "lo": 77.7,
+     "hi": 83.0,
+     "strict": 14.9,
+     "conds": {
+      "EN_Direct": 86.1,
+      "EN_Inst": 95.2,
+      "BN_Formal": 88.5,
+      "BN_Collq": 54.7,
+      "BN_Inst": 80.8
+     },
+     "gap": 33.8
+    },
+    {
+     "model": "TigerLLM-9B-it",
+     "id": "tigerllm_9b",
+     "kind": "open",
+     "vendor": "TigerLLM",
+     "n": 879,
+     "loose": 61.1,
+     "lo": 57.8,
+     "hi": 64.3,
+     "strict": 8.6,
+     "conds": {
+      "EN_Direct": 86.7,
+      "EN_Inst": 29.7,
+      "BN_Formal": 78.7,
+      "BN_Collq": 66.8,
+      "BN_Inst": 41.8
+     },
+     "gap": 11.9
+    },
+    {
+     "model": "TigerLLM-1B",
+     "id": "tigerllm_1b",
+     "kind": "open",
+     "vendor": "TigerLLM",
+     "n": 876,
+     "loose": 15.2,
+     "lo": 12.8,
+     "hi": 17.6,
+     "strict": 2.3,
+     "conds": {
+      "EN_Direct": 36.4,
+      "EN_Inst": 17.6,
+      "BN_Formal": 6.4,
+      "BN_Collq": 4.8,
+      "BN_Inst": 11.9
+     },
+     "gap": 1.6
+    },
+    {
+     "model": "Llama-3.1-8B",
+     "id": "llama-3.1-8b",
+     "kind": "open",
+     "vendor": "Meta",
+     "n": 878,
+     "loose": 8.3,
+     "lo": 6.6,
+     "hi": 10.1,
+     "strict": 0.3,
+     "conds": {
+      "EN_Direct": 11.0,
+      "EN_Inst": 4.2,
+      "BN_Formal": 19.0,
+      "BN_Collq": 3.7,
+      "BN_Inst": 4.0
+     },
+     "gap": 15.3
+    },
+    {
+     "model": "Llama-3.2-3B",
+     "id": "llama-3.2-3b",
+     "kind": "open",
+     "vendor": "Meta",
+     "n": 877,
+     "loose": 3.1,
+     "lo": 2.1,
+     "hi": 4.2,
+     "strict": 0.2,
+     "conds": {
+      "EN_Direct": 1.2,
+      "EN_Inst": 0.6,
+      "BN_Formal": 8.7,
+      "BN_Collq": 1.1,
+      "BN_Inst": 4.0
+     },
+     "gap": 7.6
+    },
+    {
+     "model": "Gemma-3-27B",
+     "id": "gemma-3-27b",
+     "kind": "open",
+     "vendor": "Google",
+     "n": 876,
+     "loose": 66.2,
+     "lo": 63.0,
+     "hi": 69.3,
+     "strict": 11.5,
+     "conds": {
+      "EN_Direct": 89.4,
+      "EN_Inst": 33.3,
+      "BN_Formal": 86.8,
+      "BN_Collq": 70.5,
+      "BN_Inst": 49.7
+     },
+     "gap": 16.3
+    },
+    {
+     "model": "Gemma-3-12B",
+     "id": "gemma-3-12b",
+     "kind": "open",
+     "vendor": "Google",
+     "n": 878,
+     "loose": 63.8,
+     "lo": 60.6,
+     "hi": 67.0,
+     "strict": 11.0,
+     "conds": {
+      "EN_Direct": 87.3,
+      "EN_Inst": 24.8,
+      "BN_Formal": 82.2,
+      "BN_Collq": 70.4,
+      "BN_Inst": 52.0
+     },
+     "gap": 11.8
+    },
+    {
+     "model": "Gemma-4-26B",
+     "id": "gemma-4-26b",
+     "kind": "open",
+     "vendor": "Google",
+     "n": 879,
+     "loose": 51.4,
+     "lo": 48.1,
+     "hi": 54.7,
+     "strict": 3.1,
+     "conds": {
+      "EN_Direct": 16.2,
+      "EN_Inst": 24.8,
+      "BN_Formal": 90.2,
+      "BN_Collq": 64.2,
+      "BN_Inst": 58.8
+     },
+     "gap": 26.0
+    },
+    {
+     "model": "Qwen3-30B",
+     "id": "qwen3-30b",
+     "kind": "open",
+     "vendor": "Alibaba",
+     "n": 877,
+     "loose": 67.5,
+     "lo": 64.3,
+     "hi": 70.6,
+     "strict": 11.1,
+     "conds": {
+      "EN_Direct": 76.3,
+      "EN_Inst": 69.1,
+      "BN_Formal": 84.5,
+      "BN_Collq": 48.4,
+      "BN_Inst": 61.0
+     },
+     "gap": 36.1
+    },
+    {
+     "model": "DeepSeek-V3",
+     "id": "deepseek-v3",
+     "kind": "open",
+     "vendor": "DeepSeek",
+     "n": 878,
+     "loose": 87.7,
+     "lo": 85.5,
+     "hi": 89.9,
+     "strict": 24.0,
+     "conds": {
+      "EN_Direct": 88.4,
+      "EN_Inst": 89.7,
+      "BN_Formal": 96.0,
+      "BN_Collq": 75.8,
+      "BN_Inst": 89.8
+     },
+     "gap": 20.2
+    },
+    {
+     "model": "DeepSeek-V4-Pro",
+     "id": "deepseek-v4-pro",
+     "kind": "open",
+     "vendor": "DeepSeek",
+     "n": 874,
+     "loose": 73.2,
+     "lo": 70.3,
+     "hi": 76.1,
+     "strict": 34.1,
+     "conds": {
+      "EN_Direct": 56.1,
+      "EN_Inst": 85.4,
+      "BN_Formal": 85.0,
+      "BN_Collq": 61.9,
+      "BN_Inst": 79.1
+     },
+     "gap": 23.1
+    },
+    {
+     "model": "Llama-3.3-70B",
+     "id": "llama-3.3-70b",
+     "kind": "open",
+     "vendor": "Meta",
+     "n": 876,
+     "loose": 32.6,
+     "lo": 29.6,
+     "hi": 35.7,
+     "strict": 0.7,
+     "conds": {
+      "EN_Direct": 43.9,
+      "EN_Inst": 33.3,
+      "BN_Formal": 44.3,
+      "BN_Collq": 23.3,
+      "BN_Inst": 19.8
+     },
+     "gap": 21.0
+    },
+    {
+     "model": "Mistral-Medium-3",
+     "id": "mistral-medium-3",
+     "kind": "closed",
+     "vendor": "Mistral",
+     "n": 878,
+     "loose": 86.2,
+     "lo": 83.8,
+     "hi": 88.5,
+     "strict": 21.6,
+     "conds": {
+      "EN_Direct": 92.4,
+      "EN_Inst": 79.4,
+      "BN_Formal": 97.1,
+      "BN_Collq": 74.7,
+      "BN_Inst": 88.1
+     },
+     "gap": 22.4
+    },
+    {
+     "model": "GPT-4.1-mini",
+     "id": "gpt-4.1-mini",
+     "kind": "closed",
+     "vendor": "OpenAI",
+     "n": 877,
+     "loose": 78.6,
+     "lo": 75.8,
+     "hi": 81.2,
+     "strict": 15.8,
+     "conds": {
+      "EN_Direct": 56.1,
+      "EN_Inst": 93.3,
+      "BN_Formal": 91.3,
+      "BN_Collq": 68.8,
+      "BN_Inst": 84.7
+     },
+     "gap": 22.5
+    },
+    {
+     "model": "Gemini-2.5-Flash",
+     "id": "gemini-2.5-flash",
+     "kind": "closed",
+     "vendor": "Google",
+     "n": 878,
+     "loose": 54.0,
+     "lo": 50.7,
+     "hi": 57.3,
+     "strict": 8.9,
+     "conds": {
+      "EN_Direct": 12.8,
+      "EN_Inst": 23.0,
+      "BN_Formal": 90.2,
+      "BN_Collq": 71.6,
+      "BN_Inst": 68.4
+     },
+     "gap": 18.7
+    },
+    {
+     "model": "GPT-5-mini",
+     "id": "gpt-5-mini",
+     "kind": "closed",
+     "vendor": "OpenAI",
+     "n": 878,
+     "loose": 33.8,
+     "lo": 30.8,
+     "hi": 37.0,
+     "strict": 1.8,
+     "conds": {
+      "EN_Direct": 17.9,
+      "EN_Inst": 39.4,
+      "BN_Formal": 40.8,
+      "BN_Collq": 27.0,
+      "BN_Inst": 44.6
+     },
+     "gap": 13.8
+    },
+    {
+     "model": "Grok-4.3",
+     "id": "grok-4.3",
+     "kind": "closed",
+     "vendor": "xAI",
+     "n": 879,
+     "loose": 21.0,
+     "lo": 18.4,
+     "hi": 23.8,
+     "strict": 2.4,
+     "conds": {
+      "EN_Direct": 6.9,
+      "EN_Inst": 7.3,
+      "BN_Formal": 33.9,
+      "BN_Collq": 27.4,
+      "BN_Inst": 28.2
+     },
+     "gap": 6.5
+    },
+    {
+     "model": "Claude-Haiku-4.5",
+     "id": "claude-haiku-4.5",
+     "kind": "closed",
+     "vendor": "Anthropic",
+     "n": 877,
+     "loose": 16.3,
+     "lo": 13.9,
+     "hi": 18.8,
+     "strict": 3.4,
+     "conds": {
+      "EN_Direct": 5.2,
+      "EN_Inst": 0.0,
+      "BN_Formal": 35.8,
+      "BN_Collq": 16.9,
+      "BN_Inst": 22.6
+     },
+     "gap": 18.9
+    }
+   ]
+  }
+ },
+ "conditions": [
+  "EN_Direct",
+  "EN_Inst",
+  "BN_Formal",
+  "BN_Collq",
+  "BN_Inst"
+ ]
+}
