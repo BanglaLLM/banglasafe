@@ -27,7 +27,7 @@ if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)
   --venuebg:#fdefe1; --venuefg:#9c3d0d; --venueline:#f0d6bb;
   --hlrow:#fbeee1;
   --maxw:960px;
-  --measure:66ch;   /* one line length for every run of body text */
+  --text:650px;     /* every text block and the table share this column */
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth; scroll-padding-top:64px}
@@ -65,7 +65,7 @@ footer a{text-decoration:underline; text-underline-offset:2px}
 .btn .emo{font-size:15px; line-height:1; flex:0 0 auto}
 
 /* tldr + stats */
-.tldr{max-width:var(--measure); margin:34px auto 0; text-align:center; font-size:17px; color:var(--fg)}
+.tldr{max-width:var(--text); margin:34px auto 0; text-align:center; font-size:17px; color:var(--fg)}
 .tldr b{color:var(--fg)}
 .stats{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin:42px 0 6px}
 .stat{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:18px 14px; text-align:center}
@@ -91,15 +91,14 @@ nav a:hover{background:var(--panel); color:var(--fg); text-decoration:none}
 
 section{padding:52px 0; border-bottom:1px solid var(--line)}
 h2{font-size:25px; margin:0 0 6px; letter-spacing:-.01em}
-h2 + .lede{color:var(--muted); margin:0 0 26px; font-size:16px; max-width:var(--measure)}
+h2 + .lede{color:var(--muted); margin:0 0 26px; font-size:16px}
 h3{font-size:17px; margin:30px 0 8px}
 p{margin:0 0 15px}
 figure{margin:26px 0 0}
 figure img{width:100%; height:auto; display:block; border-radius:10px;
   background:var(--figbg); border:1px solid var(--line)}
 figure a{display:block}
-figcaption{color:var(--muted); font-size:13.5px; margin-top:11px; line-height:1.55;
-  max-width:var(--measure)}
+figcaption{color:var(--muted); font-size:15px; margin-top:11px; line-height:1.6}
 
 .two{display:grid; grid-template-columns:1fr 1fr; gap:34px; align-items:start}
 /* grid items default to min-width:auto, so a long token inside a <pre> pushes the
@@ -107,8 +106,13 @@ figcaption{color:var(--muted); font-size:13.5px; margin-top:11px; line-height:1.
 .two > *{min-width:0}
 /* Body text used to wrap at five different lengths on one page: 78 characters inside
    .prose, 99 in the loose paragraphs and ledes, 112 in .note, 115 in figcaptions. The
-   line-break rhythm changed every time you scrolled past a section. One measure now. */
-.prose, section > .wrap > p{max-width:var(--measure)}
+   line-break rhythm changed every time you scrolled past a section. One measure now.
+   Text blocks are also centred, so the narrow text column and the wide figures share a
+   centre axis instead of the text hanging off the left with a dead gutter on the right. */
+section h2, section h3, section h2 + .lede, section .prose, section > .wrap > p,
+section .note, section figcaption, section ol.contrib, section table{
+  max-width:var(--text); margin-left:auto; margin-right:auto;
+}
 figure.narrow{max-width:660px; margin-left:auto; margin-right:auto}
 .card{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:20px 22px}
 ol.contrib{padding-left:20px; margin:0}
@@ -121,14 +125,14 @@ code{background:var(--panel); border:1px solid var(--line); border-radius:5px;
   padding:1px 5px; font:13px ui-monospace,SFMono-Regular,Menlo,monospace}
 pre code{background:none; border:0; padding:0; font-size:inherit}
 .tablewrap{overflow-x:auto; margin:18px 0 0}
-table{border-collapse:collapse; width:100%; max-width:700px; font-size:14.5px}
+table{border-collapse:collapse; width:100%; font-size:14.5px}
 th,td{padding:9px 12px; border-bottom:1px solid var(--line); text-align:left}
 th{background:var(--panel); font-weight:600; font-size:13px; color:var(--muted);
   text-transform:uppercase; letter-spacing:.05em}
 th.n,td.n{text-align:right}
 td.n{font-variant-numeric:tabular-nums}
 tr.hl td{background:var(--hlrow); font-weight:600}
-.note{color:var(--muted); font-size:14px; margin-top:12px; max-width:var(--measure)}
+.note{color:var(--muted); font-size:15px; margin-top:12px}
 footer{padding:36px 0 56px; text-align:center; color:var(--faint); font-size:14px}
 footer a{color:var(--muted)}
 /* visitor counter: present but deliberately quiet, brightens on hover */
@@ -199,7 +203,7 @@ footer a{color:var(--muted)}
     <div class="affil"><sup>1</sup>BanglaLLM &nbsp;&nbsp;
       <sup>2</sup>Institute of Information Technology, University of Dhaka &nbsp;&nbsp;
       <sup>3</sup>University of Maryland, Baltimore County</div>
-    <div class="venue">EMNLP 2026</div>
+    <div class="venue">Under review &middot; EMNLP 2026</div>
 
     <div class="btns">
       <a class="btn" href="https://github.com/BanglaLLM/banglasafe">
