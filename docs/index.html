@@ -29,7 +29,7 @@ a{color:var(--accent); text-decoration:none; overflow-wrap:anywhere}
 a:hover{text-decoration:underline}
 
 /* hero */
-header{padding:64px 0 30px; text-align:center; border-bottom:1px solid var(--line)}
+header{padding:46px 0 30px; text-align:center; border-bottom:1px solid var(--line)}
 h1{font-size:38px; line-height:1.2; margin:0 0 6px; letter-spacing:-.02em}
 h1 .sub{display:block; font-size:22px; font-weight:600; color:var(--muted); margin-top:12px; letter-spacing:0}
 .authors{margin:22px 0 4px; font-size:16px}
@@ -109,6 +109,12 @@ footer a{color:var(--muted)}
   .stats{grid-template-columns:repeat(2,1fr)}
   .two{grid-template-columns:1fr; gap:24px}
   section{padding:40px 0}
+  /* eight links wrap to three rows on a phone, which makes the sticky bar 135px
+     tall and pushes anchor targets underneath it. Scroll it sideways instead. */
+  nav .wrap{flex-wrap:nowrap; justify-content:flex-start; overflow-x:auto;
+    -webkit-overflow-scrolling:touch; scrollbar-width:none}
+  nav .wrap::-webkit-scrollbar{display:none}
+  nav a{flex:0 0 auto; white-space:nowrap}
 }
 @media (prefers-color-scheme:dark){
   :root{--bg:#0f1114; --fg:#e9ecef; --muted:#98a1ab; --faint:#7c858e;
@@ -125,6 +131,17 @@ footer a{color:var(--muted)}
 </style>
 </head>
 <body>
+
+<nav><div class="wrap">
+  <a href="#overview">Overview</a>
+  <a href="#finding">Finding</a>
+  <a href="#where">Where it goes</a>
+  <a href="#gap">Why Bengali</a>
+  <a href="#judge">Judge</a>
+  <a href="#quickstart">Quickstart</a>
+  <a href="#data">Data</a>
+  <a href="#cite">Cite</a>
+</div></nav>
 
 <header>
   <div class="wrap">
@@ -170,17 +187,6 @@ footer a{color:var(--muted)}
     </div>
   </div>
 </header>
-
-<nav><div class="wrap">
-  <a href="#overview">Overview</a>
-  <a href="#finding">Finding</a>
-  <a href="#where">Where it goes</a>
-  <a href="#gap">Why Bengali</a>
-  <a href="#judge">Judge</a>
-  <a href="#quickstart">Quickstart</a>
-  <a href="#data">Data</a>
-  <a href="#cite">Cite</a>
-</div></nav>
 
 <section id="overview">
   <div class="wrap">
