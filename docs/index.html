@@ -102,10 +102,14 @@ figure img{width:100%; height:auto; display:block; border-radius:10px;
   background:var(--figbg); border:1px solid var(--line)}
 figure a{display:block}
 figcaption{color:var(--muted); font-size:15px; margin-top:11px; line-height:1.6}
-/* one line per panel; run together they read as a single scattered block */
-figcaption.panels span{display:block; margin-bottom:7px}
-figcaption.panels span:last-child{margin-bottom:0}
-figcaption.panels b{color:var(--fg)}
+/* The figure has three panels, so its caption sits in three columns under them: each
+   description lands beneath the panel it describes, and the caption spans the figure
+   instead of stopping two thirds across and leaving a hole on the right. Column widths
+   track the panels, whose centre block is the widest. */
+figcaption.panels{max-width:none; display:grid; grid-template-columns:1fr 1.12fr 1fr;
+  gap:26px; font-size:14px; line-height:1.55}
+figcaption.panels span{display:block}
+figcaption.panels b{display:block; color:var(--fg); margin-bottom:3px}
 
 .two{display:grid; grid-template-columns:1fr 1fr; gap:34px; align-items:start}
 /* grid items default to min-width:auto, so a long token inside a <pre> pushes the
@@ -171,6 +175,7 @@ footer a{color:var(--muted)}
   h1{font-size:29px} h1 .sub{font-size:18px}
   .stats{grid-template-columns:repeat(2,1fr)}
   .two{grid-template-columns:1fr; gap:24px}
+  figcaption.panels{grid-template-columns:1fr; gap:12px}
   section{padding:40px 0}
 }
 /* dark stays last in the sheet so its same-specificity rules win the cascade */
@@ -273,15 +278,15 @@ footer a{color:var(--muted)}
     <figure>
       <a href="static/images/overview.png" title="Open full size"><img class="framed" src="static/images/overview.png" alt="BanglaSafe construction pipeline: 879 prompts from a 17-category harm taxonomy, expanded across five prompting conditions, run through 18 LLMs, then validated and judged four ways."></a>
       <figcaption class="panels">
-        <span><b>Left</b> &mdash; 879 prompts (309 written directly by a native Bengali speaker, 570
+        <span><b>Left</b>879 prompts (309 written directly by a native Bengali speaker, 570
         model-assisted and human-validated) drawn from a 17-category harm taxonomy, each category
         anchored to a Bangladesh statute or a documented case rather than translated from an English
         dataset.</span>
-        <span><b>Centre</b> &mdash; every harm instance appears under five conditions that vary
-        language, register, and authority framing, yielding 15,822 responses across 18 models. The
-        arrows mark the three paired comparisons: language, register, and authority.</span>
-        <span><b>Right</b> &mdash; two-stage evaluation, human prompt validation followed by a
-        calibrated four-way judge.</span>
+        <span><b>Centre</b>every harm instance appears under five conditions that vary language,
+        register, and authority framing, yielding 15,822 responses across 18 models. The arrows mark
+        the three paired comparisons: language, register, and authority.</span>
+        <span><b>Right</b>two-stage evaluation, human prompt validation followed by a calibrated
+        four-way judge.</span>
       </figcaption>
     </figure>
 
