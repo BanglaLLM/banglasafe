@@ -73,6 +73,49 @@ h1{font-size:33px; line-height:1.2; margin:0 auto 8px; letter-spacing:-.02em;
 .search:focus{outline:2px solid var(--accent); outline-offset:-1px}
 .count{margin-left:auto; font-size:13.5px; color:var(--muted); padding-bottom:9px}
 
+/* column picker */
+.colbtn{border:1px solid var(--line); background:var(--panel); color:var(--fg); cursor:pointer;
+  font:inherit; font-size:14px; padding:8px 13px; border-radius:9px}
+.colbtn:hover{background:var(--bg)}
+.colwrap{position:relative}
+.colpanel{position:absolute; z-index:30; top:calc(100% + 6px); left:0; width:236px; padding:8px;
+  background:var(--bg); border:1px solid var(--line); border-radius:11px;
+  box-shadow:0 10px 28px rgba(0,0,0,.13)}
+.colpanel[hidden]{display:none}
+.colpanel li{display:flex; align-items:center; gap:8px; padding:6px 7px; border-radius:7px;
+  font-size:14px; cursor:grab; list-style:none}
+.colpanel li:hover{background:var(--panel)}
+.colpanel li.locked{cursor:default; color:var(--faint)}
+.colpanel li.dragging{opacity:.4}
+.colpanel li.over{box-shadow:inset 0 2px 0 var(--accent)}
+.colpanel ul{margin:0; padding:0}
+.colpanel .grip{color:var(--faint); font-size:13px; letter-spacing:-1px}
+.colpanel .reset{display:block; width:100%; margin-top:6px; padding:7px; border:0; cursor:pointer;
+  background:transparent; color:var(--accent); font:inherit; font-size:13.5px; border-radius:7px}
+.colpanel .reset:hover{background:var(--panel)}
+
+/* chart views */
+.chartwrap{margin:0 0 6px; overflow-x:auto}
+.chartwrap[hidden]{display:none}
+/* let the chart keep its natural size and scroll; scaling it to a phone width would
+   shrink 12px labels to ~6px */
+.chartwrap svg{display:block}
+.chartwrap text{font-family:inherit; fill:var(--muted)}
+.chartwrap text.lbl{fill:var(--fg)}
+.chartwrap .grid{stroke:var(--line)}
+.legend{display:flex; gap:18px; align-items:center; flex-wrap:wrap; margin:14px 0 0;
+  font-size:13.5px; color:var(--muted)}
+.legend i{display:inline-block; width:11px; height:11px; border-radius:3px; margin-right:6px;
+  vertical-align:-1px}
+.rampbar{display:inline-flex; height:11px; border-radius:3px; overflow:hidden; width:150px;
+  vertical-align:-1px; margin:0 7px}
+.rampbar span{flex:1}
+.tip{position:fixed; z-index:60; pointer-events:none; background:var(--fg); color:var(--bg);
+  font-size:12.5px; line-height:1.45; padding:7px 10px; border-radius:8px; max-width:230px;
+  opacity:0; transition:opacity .1s}
+.tip.on{opacity:1}
+.tip b{color:var(--bg)}
+
 /* table */
 /* The table always scrolls inside its own wrapper. Rank and Model stay pinned to the left
    so you never lose track of which row a number belongs to, and the least load-bearing
@@ -214,9 +257,24 @@ footer p{max-width:var(--text); margin-left:auto; margin-right:auto}
         <button type="button" data-v="closed" aria-pressed="false">Closed-source</button>
       </span>
     </label>
+    <label class="ctl"><span>View</span>
+      <span class="seg" id="segView" role="group" aria-label="View">
+        <button type="button" data-v="table" aria-pressed="true">Table</button>
+        <button type="button" data-v="heat" aria-pressed="false">Heatmap</button>
+        <button type="button" data-v="gap" aria-pressed="false">Register gap</button>
+      </span>
+    </label>
     <label class="ctl"><span>Search</span>
       <input class="search" id="q" type="search" placeholder="Model or vendor" autocomplete="off">
     </label>
+    <div class="ctl colwrap" id="colwrap"><span>Columns</span>
+      <button class="colbtn" type="button" id="colbtn" aria-expanded="false" aria-controls="colpanel">
+        Choose &amp; reorder</button>
+      <div class="colpanel" id="colpanel" hidden>
+        <ul id="collist"></ul>
+        <button class="reset" type="button" id="colreset">Reset to default</button>
+      </div>
+    </div>
     <div class="count" id="count"></div>
   </div>
 
@@ -227,6 +285,9 @@ footer p{max-width:var(--text); margin-left:auto; margin-right:auto}
     </table>
   </div>
   <p class="scrollhint">Scroll the table sideways for the remaining columns. Rank and model stay put.</p>
+  <div class="chartwrap" id="chartwrap" hidden></div>
+  <div class="legend" id="legend" hidden></div>
+  <div class="tip" id="tip" role="status" aria-live="polite"></div>
 
   <div class="foot">
     <h2>What each column means</h2>
@@ -296,26 +357,65 @@ footer p{max-width:var(--text); margin-left:auto; margin-right:auto}
 })();
 
 (function(){
-  var DATA=null, judge='claude', scope='all', query='';
+  var DATA=null, judge='claude', scope='all', query='', view='table';
   var sort={key:'loose', dir:1};           // ascending ASR: safest first
   var CONDS=[];
 
-  var COLS=[
-    {key:'rank',   label:'#',      col:'rank',   cls:'rank', sortable:false},
-    {key:'model',  label:'Model',  col:'model',  cls:'model'},
+  // Sequential ramps for the heatmap. Light: pale -> deep blue. Dark: near-surface ->
+  // bright blue, so more is still brighter against its own background. Both were
+  // checked for monotonic OKLab lightness rather than eyeballed.
+  // Both ramps are monotonic in OKLab lightness, and each step was chosen so the value
+  // printed on it clears 4.5:1. The light ramp flips ink->white at step 5; the dark ramp
+  // is capped at #4076b8 because anything lighter cannot carry white text.
+  var RAMP_LIGHT=['#eef4fb','#d7e6f7','#b9d3f0','#8fb8e6','#5f95d8','#2773cd','#1f5fb4','#174a8d'];
+  var RAMP_DARK =['#151a21','#18222f','#1c2a3d','#20334c','#25405f','#2b4d73','#33608f','#4076b8'];
+  // Categorical pair, validated by the dataviz validator in both modes:
+  // light #2a78d6/#eb6834, dark #5f95d8/#e66430. Orange stays BN_Formal everywhere on
+  // the site, so the mapping the reader learnt from the hero figure still holds.
+  function pal(){
+    var dark=document.documentElement.getAttribute('data-theme')==='dark';
+    return dark ? {collq:'#5f95d8', formal:'#e66430', ramp:RAMP_DARK, inkFrom:0}
+                : {collq:'#2a78d6', formal:'#eb6834', ramp:RAMP_LIGHT, inkFrom:5};
+  }
+
+  var BASE=[
+    {key:'rank',   label:'#',      col:'rank',   cls:'rank', sortable:false, lock:true},
+    {key:'model',  label:'Model',  col:'model',  cls:'model', lock:true},
     {key:'vendor', label:'Vendor', col:'vendor', cls:'vendor'},
     {key:'kind',   label:'Type',   col:'kind',   cls:''},
     {key:'loose',  label:'ASR',    col:'asr',    cls:'n', num:true},
     {key:'strict', label:'Strict', col:'strict', cls:'n', num:true}
   ];
+  var ALL=[], order=[], off={};
 
   function esc(s){return String(s).replace(/[&<>"]/g,function(c){
     return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 
-  function columns(){
-    return COLS.concat(CONDS.map(function(c){
+  function buildAll(){
+    ALL=BASE.concat(CONDS.map(function(c){
       return {key:'c:'+c, label:c.replace('_',' '), col:'cond', cls:'n', num:true};
     })).concat([{key:'gap', label:'Gap', col:'gap', cls:'n', num:true}]);
+  }
+  function defaultOrder(){ return ALL.map(function(c){return c.key;}); }
+  function byKey(k){ for(var i=0;i<ALL.length;i++) if(ALL[i].key===k) return ALL[i]; }
+  function columns(){ return order.map(byKey).filter(function(c){return c && !off[c.key];}); }
+
+  function loadPrefs(){
+    order=defaultOrder(); off={};
+    try{
+      var raw=JSON.parse(localStorage.getItem('bs-cols')||'null');
+      if(raw && raw.order){
+        // keep only keys we still know about, then append anything new
+        var known=raw.order.filter(byKey);
+        defaultOrder().forEach(function(k){ if(known.indexOf(k)<0) known.push(k); });
+        // the two sticky identity columns are always first, in this order
+        known=['rank','model'].concat(known.filter(function(k){return k!=='rank'&&k!=='model';}));
+        order=known; off=raw.off||{};
+      }
+    }catch(e){}
+  }
+  function savePrefs(){
+    try{ localStorage.setItem('bs-cols', JSON.stringify({order:order, off:off})); }catch(e){}
   }
 
   function value(row,key){
@@ -338,6 +438,7 @@ footer p{max-width:var(--text); margin-left:auto; margin-right:auto}
     return out;
   }
 
+  /* ---------------------------------------------------------------- table */
   function renderHead(){
     document.getElementById('head').innerHTML=columns().map(function(c){
       var on=sort.key===c.key;
@@ -351,47 +452,186 @@ footer p{max-width:var(--text); margin-left:auto; margin-right:auto}
     [].forEach.call(document.querySelectorAll('#head th[data-key]'), function(th){
       th.addEventListener('click', function(){
         var k=th.getAttribute('data-key');
-        if(sort.key===k){ sort.dir=-sort.dir; }
-        else { sort.key=k; sort.dir=(k==='model'||k==='vendor'||k==='kind')?1:1; }
+        if(sort.key===k){ sort.dir=-sort.dir; } else { sort.key=k; sort.dir=1; }
         render();
       });
     });
   }
 
+  function cell(c, r, i, peak){
+    switch(c.key){
+      case 'rank':   return '<td class="rank" data-col="rank">'+(i+1)+'</td>';
+      case 'model':  return '<td class="model" data-col="model">'+esc(r.model)+'</td>';
+      case 'vendor': return '<td class="vendor" data-col="vendor">'+esc(r.vendor)+'</td>';
+      case 'kind':   return '<td data-col="kind"><span class="chip'+(r.kind==='closed'?' closed':'')+'">'
+                       +(r.kind==='closed'?'closed':'open')+'</span></td>';
+      case 'loose':  return '<td class="n asrcell" data-col="asr"><span class="fill" style="width:'
+                       +r.loose.toFixed(1)+'%"></span><span class="v">'+r.loose.toFixed(1)+'%</span>'
+                       +'<span class="ci">['+r.lo.toFixed(1)+', '+r.hi.toFixed(1)+']</span></td>';
+      case 'strict': return '<td class="n" data-col="strict">'+r.strict.toFixed(1)+'%</td>';
+      case 'gap':    return '<td class="n gap'+(r.gap<=0?' neg':'')+'" data-col="gap">'
+                       +(r.gap>0?'+':'')+r.gap.toFixed(1)+'</td>';
+      default:
+        var k=c.key.slice(2);
+        return '<td class="n'+(k===peak?' peak':'')+'" data-col="cond">'+r.conds[k].toFixed(1)+'%</td>';
+    }
+  }
+
   function renderBody(){
-    var rs=rows(), max=100;
+    var cols=columns(), rs=rows();
     document.getElementById('body').innerHTML=rs.map(function(r,i){
       var peak=CONDS.reduce(function(a,c){return r.conds[c]>r.conds[a]?c:a;}, CONDS[0]);
-      var cells=[
-        '<td class="rank" data-col="rank">'+(i+1)+'</td>',
-        '<td class="model" data-col="model">'+esc(r.model)+'</td>',
-        '<td class="vendor" data-col="vendor">'+esc(r.vendor)+'</td>',
-        '<td data-col="kind"><span class="chip'+(r.kind==='closed'?' closed':'')+'">'
-          +(r.kind==='closed'?'closed':'open')+'</span></td>',
-        '<td class="n asrcell" data-col="asr"><span class="fill" style="width:'+(r.loose/max*100).toFixed(1)+'%"></span>'
-          +'<span class="v">'+r.loose.toFixed(1)+'%</span>'
-          +'<span class="ci">['+r.lo.toFixed(1)+', '+r.hi.toFixed(1)+']</span></td>',
-        '<td class="n" data-col="strict">'+r.strict.toFixed(1)+'%</td>'
-      ];
-      CONDS.forEach(function(c){
-        cells.push('<td class="n'+(c===peak?' peak':'')+'" data-col="cond">'+r.conds[c].toFixed(1)+'%</td>');
-      });
-      cells.push('<td class="n gap'+(r.gap<=0?' neg':'')+'" data-col="gap">'
-        +(r.gap>0?'+':'')+r.gap.toFixed(1)+'</td>');
-      return '<tr>'+cells.join('')+'</tr>';
+      return '<tr>'+cols.map(function(c){return cell(c,r,i,peak);}).join('')+'</tr>';
     }).join('');
+    counts(rs);
+  }
 
+  function counts(rs){
     var j=DATA.judges[judge];
     document.getElementById('count').textContent=
       rs.length+' of 18 models · '+j.n.toLocaleString()+' judged responses · cohort ASR '
       +j.overall.toFixed(1)+'%';
   }
 
+  /* ---------------------------------------------------------------- charts */
+  var tip=null;
+  function showTip(e, html){
+    if(!tip) tip=document.getElementById('tip');
+    tip.innerHTML=html; tip.classList.add('on');
+    var x=e.clientX+14, y=e.clientY+14;
+    if(x+240>window.innerWidth) x=e.clientX-240;
+    tip.style.left=x+'px'; tip.style.top=y+'px';
+  }
+  function hideTip(){ if(tip) tip.classList.remove('on'); }
+
+  function svgEl(w,h){
+    return '<svg viewBox="0 0 '+w+' '+h+'" width="'+w+'" height="'+h+'" role="img">';
+  }
+
+  function renderHeat(){
+    var rs=rows(), P=pal();
+    var padL=168, padT=34, cw=118, ch=30, gapx=3, gapy=3;
+    var w=padL+CONDS.length*(cw+gapx), h=padT+rs.length*(ch+gapy)+8;
+    var out=[svgEl(w,h)];
+    CONDS.forEach(function(c,j){
+      out.push('<text x="'+(padL+j*(cw+gapx)+cw/2)+'" y="'+(padT-12)+'" text-anchor="middle" font-size="12">'
+        +esc(c.replace('_',' '))+'</text>');
+    });
+    rs.forEach(function(r,i){
+      var y=padT+i*(ch+gapy);
+      out.push('<text class="lbl" x="'+(padL-12)+'" y="'+(y+ch/2+4)+'" text-anchor="end" font-size="12.5">'
+        +esc(r.model)+'</text>');
+      CONDS.forEach(function(c,j){
+        var v=r.conds[c], step=Math.min(P.ramp.length-1, Math.floor(v/100*P.ramp.length));
+        var x=padL+j*(cw+gapx);
+        out.push('<rect x="'+x+'" y="'+y+'" width="'+cw+'" height="'+ch+'" rx="4" fill="'+P.ramp[step]+'"'
+          +' data-tip="'+esc(r.model)+' · '+esc(c.replace('_',' '))+'|'+v.toFixed(1)+'% answered"></rect>');
+        out.push('<text x="'+(x+cw/2)+'" y="'+(y+ch/2+4)+'" text-anchor="middle" font-size="12" '
+          +'style="fill:'+(step>=P.inkFrom?'#ffffff':'#1b1917')+'" pointer-events="none">'+v.toFixed(1)+'</text>');
+      });
+    });
+    out.push('</svg>');
+    document.getElementById('chartwrap').innerHTML=out.join('');
+    document.getElementById('legend').innerHTML=
+      '<span>Share of responses answered &nbsp;0%<span class="rampbar">'
+      +P.ramp.map(function(c){return '<span style="background:'+c+'"></span>';}).join('')
+      +'</span>100%</span>'
+      +'<span>Each row is one model; each column the same harm act in a different register.</span>';
+    counts(rs);
+  }
+
+  function renderGap(){
+    var P=pal();
+    var rs=rows().slice().sort(function(a,b){return b.gap-a.gap;});
+    var padL=168, padR=86, padT=34, rh=30, w=980, h=padT+rs.length*rh+34;
+    var x0=padL, x1=w-padR, sx=function(v){return x0+(v/100)*(x1-x0);};
+    var out=[svgEl(w,h)];
+    [0,25,50,75,100].forEach(function(t){
+      out.push('<line class="grid" x1="'+sx(t)+'" y1="'+(padT-14)+'" x2="'+sx(t)+'" y2="'+(padT+rs.length*rh-8)+'" stroke-width="1"></line>');
+      out.push('<text x="'+sx(t)+'" y="'+(padT-20)+'" text-anchor="middle" font-size="11.5">'+t+'%</text>');
+    });
+    rs.forEach(function(r,i){
+      var y=padT+i*rh+rh/2-4;
+      var a=sx(r.conds.BN_Collq), b=sx(r.conds.BN_Formal);
+      out.push('<text class="lbl" x="'+(padL-12)+'" y="'+(y+4)+'" text-anchor="end" font-size="12.5">'+esc(r.model)+'</text>');
+      out.push('<line x1="'+a+'" y1="'+y+'" x2="'+b+'" y2="'+y+'" stroke="var(--line)" stroke-width="3" stroke-linecap="round"></line>');
+      out.push('<circle cx="'+a+'" cy="'+y+'" r="5.5" fill="'+P.collq+'" stroke="var(--bg)" stroke-width="2"'
+        +' data-tip="'+esc(r.model)+' · BN_Collq|'+r.conds.BN_Collq.toFixed(1)+'% answered"></circle>');
+      out.push('<circle cx="'+b+'" cy="'+y+'" r="5.5" fill="'+P.formal+'" stroke="var(--bg)" stroke-width="2"'
+        +' data-tip="'+esc(r.model)+' · BN_Formal|'+r.conds.BN_Formal.toFixed(1)+'% answered"></circle>');
+      out.push('<text class="lbl" x="'+(w-padR+14)+'" y="'+(y+4)+'" font-size="12.5" font-weight="700"'
+        +(r.gap<=0?' opacity="0.55"':'')+'>'+(r.gap>0?'+':'')+r.gap.toFixed(1)+'</text>');
+    });
+    out.push('</svg>');
+    document.getElementById('chartwrap').innerHTML=out.join('');
+    document.getElementById('legend').innerHTML=
+      '<span><i style="background:'+P.formal+'"></i>BN_Formal, journalism</span>'
+      +'<span><i style="background:'+P.collq+'"></i>BN_Collq, peer-help</span>'
+      +'<span>Both are Bengali. The bar length is the register effect; the number on the right is it in points.</span>';
+    counts(rs);
+  }
+
+  function wireTips(){
+    var wrap=document.getElementById('chartwrap');
+    wrap.addEventListener('mousemove', function(e){
+      var t=e.target.getAttribute && e.target.getAttribute('data-tip');
+      if(!t) return hideTip();
+      var parts=t.split('|');
+      showTip(e, '<b>'+parts[0]+'</b><br>'+parts[1]);
+    });
+    wrap.addEventListener('mouseleave', hideTip);
+  }
+
+  /* ---------------------------------------------------------------- picker */
+  function renderPicker(){
+    var ul=document.getElementById('collist');
+    ul.innerHTML=order.map(byKey).filter(Boolean).map(function(c){
+      return '<li'+(c.lock?' class="locked"':' draggable="true"')+' data-k="'+c.key+'">'
+        +'<span class="grip">'+(c.lock?'  ':'≡')+'</span>'
+        +'<input type="checkbox" '+(off[c.key]?'':'checked')+(c.lock?' disabled':'')+'>'
+        +'<span>'+esc(c.label)+'</span></li>';
+    }).join('');
+    [].forEach.call(ul.querySelectorAll('input'), function(cb){
+      cb.addEventListener('change', function(){
+        var k=cb.closest('li').getAttribute('data-k');
+        if(cb.checked) delete off[k]; else off[k]=1;
+        savePrefs(); render();
+      });
+    });
+    var dragged=null;
+    [].forEach.call(ul.querySelectorAll('li[draggable]'), function(li){
+      li.addEventListener('dragstart', function(){ dragged=li; li.classList.add('dragging'); });
+      li.addEventListener('dragend', function(){ li.classList.remove('dragging');
+        [].forEach.call(ul.querySelectorAll('li'), function(x){x.classList.remove('over');}); });
+      li.addEventListener('dragover', function(e){ e.preventDefault(); li.classList.add('over'); });
+      li.addEventListener('dragleave', function(){ li.classList.remove('over'); });
+      li.addEventListener('drop', function(e){
+        e.preventDefault();
+        if(!dragged || dragged===li) return;
+        var from=order.indexOf(dragged.getAttribute('data-k'));
+        var to=order.indexOf(li.getAttribute('data-k'));
+        order.splice(to, 0, order.splice(from,1)[0]);
+        savePrefs(); renderPicker(); render();
+      });
+    });
+  }
+
+  /* ---------------------------------------------------------------- render */
   function markScroll(){
     var w=document.getElementById('tablewrap');
-    w.classList.toggle('scrolls', w.scrollWidth > w.clientWidth + 1);
+    w.classList.toggle('scrolls', view==='table' && w.scrollWidth > w.clientWidth + 1);
   }
-  function render(){ renderHead(); renderBody(); markScroll(); }
+  function render(){
+    var isTable=view==='table';
+    document.getElementById('tablewrap').hidden=!isTable;
+    document.querySelector('.scrollhint').style.display=isTable?'':'none';
+    document.getElementById('chartwrap').hidden=isTable;
+    document.getElementById('legend').hidden=isTable;
+    document.getElementById('colwrap').style.display=isTable?'':'none';
+    if(isTable){ renderHead(); renderBody(); markScroll(); }
+    else if(view==='heat') renderHeat();
+    else renderGap();
+  }
   window.addEventListener('resize', markScroll);
 
   function wire(id, set){
@@ -408,11 +648,30 @@ footer p{max-width:var(--text); margin-left:auto; margin-right:auto}
 
   fetch('leaderboard_data.json').then(function(r){return r.json();}).then(function(d){
     DATA=d; CONDS=d.conditions;
+    buildAll(); loadPrefs(); renderPicker(); wireTips();
     wire('segJudge', function(v){ judge=v; });
     wire('segScope', function(v){ scope=v; });
+    wire('segView',  function(v){ view=v; });
     document.getElementById('q').addEventListener('input', function(e){
-      query=e.target.value.trim(); renderBody();
+      query=e.target.value.trim(); render();
     });
+    var btn=document.getElementById('colbtn'), panel=document.getElementById('colpanel');
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var open=panel.hidden;
+      panel.hidden=!open; btn.setAttribute('aria-expanded', String(open));
+    });
+    document.addEventListener('click', function(e){
+      if(!panel.hidden && !panel.contains(e.target) && e.target!==btn){
+        panel.hidden=true; btn.setAttribute('aria-expanded','false');
+      }
+    });
+    document.getElementById('colreset').addEventListener('click', function(){
+      order=defaultOrder(); off={}; savePrefs(); renderPicker(); render();
+    });
+    // repaint the charts when the theme flips, the ramps differ per surface
+    new MutationObserver(function(){ if(view!=='table') render(); })
+      .observe(document.documentElement, {attributes:true, attributeFilter:['data-theme']});
     render();
   }).catch(function(err){
     document.getElementById('body').innerHTML=
