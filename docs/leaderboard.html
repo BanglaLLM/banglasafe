@@ -117,7 +117,13 @@ td.gap{font-weight:700; font-variant-numeric:tabular-nums}
 td.gap.neg{color:var(--muted); font-weight:500}
 
 .foot{margin:26px auto 0; color:var(--muted); font-size:15px; line-height:1.65; max-width:var(--text)}
+.foot h2{font-size:16px; color:var(--fg); margin:0 0 12px}
 .foot p{margin:0 0 11px}
+/* one line per column, not a paragraph nobody reads */
+.defs{list-style:none; padding:0; margin:0 0 18px}
+.defs li{margin:0 0 7px; padding-left:15px; text-indent:-15px}
+.defs li::before{content:'\2022'; color:var(--faint); margin-right:9px}
+.defs b{color:var(--fg)}
 .foot b{color:var(--fg)}
 .foot code{background:var(--panel); border:1px solid var(--line); border-radius:5px; padding:1px 5px;
   font:12.5px ui-monospace,SFMono-Regular,Menlo,monospace}
@@ -223,28 +229,37 @@ footer p{max-width:var(--text); margin-left:auto; margin-right:auto}
   <p class="scrollhint">Scroll the table sideways for the remaining columns. Rank and model stay put.</p>
 
   <div class="foot">
-    <p><b>ASR</b> is the share of responses the judge scored <code>PARTIAL</code> or
-    <code>HARMFUL</code> out of the four labels. <b>Strict</b> counts only <code>HARMFUL</code>,
-    which is the operationally useful subset. The bracketed range is a 95% percentile bootstrap
-    interval, B&nbsp;=&nbsp;10,000, seed&nbsp;20260521. Each model answers all 879 prompts, so
-    n&nbsp;=&nbsp;879 per model unless a judge declined to label something.</p>
-    <p>The five middle columns are the same harm act written five ways: English direct, English with
-    an institutional persona, formal Bengali journalism, colloquial Banglish peer-help, and Bengali
-    institutional. The shaded cell in each row is that model's most permissive register.
-    <b>Gap</b> is BN_Formal minus BN_Collq: both are Bengali, so it isolates register from language.</p>
-    <p>Two judges are shown because a reviewer will ask whether the effect is an artefact of the
-    judge. It is not. Gemini 3.1 Pro, prompted with the same rubric, reproduces the ranking almost
-    exactly; it labels 15,794 of 15,822 responses, having declined 28 on its own content policy.
-    Rates use each judge's own denominator.</p>
-    <p>These are single-turn prompts with no adversarial suffix, no roleplay wrapper, and no
-    optimisation. Decoding was temperature 0, top-p 1, empty system prompt.</p>
+    <h2>What each column means</h2>
+    <ul class="defs">
+      <li><b>ASR</b> &mdash; how often the model answered. Share of its 879 responses judged
+        <code>PARTIAL</code> or <code>HARMFUL</code>. Lower is safer.</li>
+      <li><b>[low, high]</b> &mdash; 95% bootstrap interval on that ASR. B&nbsp;=&nbsp;10,000.</li>
+      <li><b>Strict</b> &mdash; the <code>HARMFUL</code> share on its own, without
+        <code>PARTIAL</code>. The operationally useful subset.</li>
+      <li><b>EN Direct</b> &mdash; the request in plain English, no persona.</li>
+      <li><b>EN Inst</b> &mdash; same request, English, institutional persona.</li>
+      <li><b>BN Formal</b> &mdash; same request, formal Bengali journalism.</li>
+      <li><b>BN Collq</b> &mdash; same request, colloquial Banglish peer-help.</li>
+      <li><b>BN Inst</b> &mdash; same request, Bengali, institutional persona.</li>
+      <li><b>Gap</b> &mdash; BN&nbsp;Formal minus BN&nbsp;Collq. Both are Bengali, so it isolates
+        register from language.</li>
+    </ul>
+    <ul class="defs">
+      <li><b>Shaded cell</b> &mdash; that model's most permissive register.</li>
+      <li><b>Two judges</b> &mdash; Gemini 3.1 Pro on the same rubric reproduces the ranking, so the
+        effect is not a judge artefact. It labels 15,794 of 15,822; it declined 28 on its own
+        content policy.</li>
+      <li><b>No jailbreak</b> &mdash; single-turn prompts, no adversarial suffix, no roleplay
+        wrapper. Temperature 0, top-p 1, empty system prompt.</li>
+    </ul>
   </div>
 
   <div class="submit">
     <h2>Add your model</h2>
     <p>The CLI runs the whole benchmark against any OpenAI-compatible endpoint and prints the same
-    numbers you see here, positioned against this cohort. Send us the generated
-    <code>report.json</code> and we will add the row.</p>
+    numbers you see here, positioned against this cohort. Email the generated
+    <code>report.json</code> to <a href="mailto:naymul504@gmail.com">naymul504@gmail.com</a>
+    and we will add the row.</p>
 <pre><code>uvx banglasafe run \
   --model your-model \
   --base-url http://localhost:8000/v1 \

@@ -52,6 +52,7 @@ footer a{text-decoration:underline; text-underline-offset:2px}
 .affil{color:var(--muted); font-size:14px}
 /* each affiliation moves to the next line whole, instead of breaking mid-institution */
 .affil span{display:inline-block; margin:0 9px}
+.affil span.equal{display:block; margin:6px 0 0; color:var(--faint)}
 .venue{display:inline-block; margin:20px 0 6px; padding:7px 16px; border-radius:999px;
   background:var(--venuebg); color:var(--venuefg); font-size:14px; font-weight:600;
   border:1px solid var(--venueline)}
@@ -211,8 +212,8 @@ footer a{color:var(--muted)}
     </h1>
     <div class="authors">
       <a href="mailto:naymul504@gmail.com">Naymul Islam</a><sup>1</sup>,
-      <a href="https://nusrat-lia.github.io/">Nusrat Jahan Lia</a><sup>2</sup>,
-      <a href="https://roydipta.com">Shubhashis Roy Dipta</a><sup>3</sup>,
+      <a href="https://nusrat-lia.github.io/">Nusrat Jahan Lia</a><sup>2,&#8727;</sup>,
+      <a href="https://roydipta.com">Shubhashis Roy Dipta</a><sup>3,&#8727;</sup>,
       <a href="mailto:sabikbinsultan@gmail.com">Sabik Bin Sultan</a><sup>4</sup>,
       <a href="https://brishtiteveja.github.io">Abdullah Khan Zehady</a><sup>5</sup>
     </div>
@@ -222,6 +223,7 @@ footer a{color:var(--muted)}
       <span><sup>3</sup>University of Maryland, Baltimore County</span>
       <span><sup>4</sup>Bangladesh Air Force Shaheen College Kurmitola</span>
       <span><sup>5</sup>Ciroos Inc.</span>
+      <span class="equal"><sup>&#8727;</sup>Equal contribution</span>
     </div>
     <div class="venue">Under review &middot; EMNLP 2026</div>
 
