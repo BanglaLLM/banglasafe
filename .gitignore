@@ -10,3 +10,7 @@ results/
 .pytest_cache/
 .ruff_cache/
 .DS_Store
+
+# never publish the internal change log
+docs/PROJECT_STATE.md
+PROJECT_STATE.md
