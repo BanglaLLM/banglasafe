@@ -1,7 +1,7 @@
 # BanglaSafe
 
 <p align="center">
-  <a href="https://banglallm.github.io/banglasafe/"><img alt="Accepted at EMNLP 2026 (Findings)" src="https://img.shields.io/badge/%F0%9F%94%A5%20ACCEPTED%20AT-EMNLP%202026%20%28FINDINGS%29%20%F0%9F%94%A5-b22222?style=for-the-badge&labelColor=f5a623"></a>
+  <a href="https://banglallm.github.io/banglasafe/"><img alt="Published in Findings of EMNLP 2026" src="https://img.shields.io/badge/%F0%9F%94%A5%20PUBLISHED%20IN-FINDINGS%20OF%20EMNLP%202026%20%F0%9F%94%A5-b22222?style=for-the-badge&labelColor=f5a623"></a>
 </p>
 
 [![arXiv](https://img.shields.io/badge/arXiv-2608.22335-b31b1b)](https://arxiv.org/abs/2608.22335)
