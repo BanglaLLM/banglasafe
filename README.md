@@ -1,9 +1,10 @@
 # BanglaSafe
 
 <p align="center">
-  <a href="https://banglallm.github.io/banglasafe/"><img alt="Published in Findings of EMNLP 2026" src="https://img.shields.io/badge/%F0%9F%94%A5%20PUBLISHED%20IN-FINDINGS%20OF%20EMNLP%202026%20%F0%9F%94%A5-b22222?style=for-the-badge&labelColor=f5a623"></a>
+  <a href="https://aclanthology.org/2026.findings-emnlp.1403/"><img alt="Published in Findings of EMNLP 2026" src="https://img.shields.io/badge/%F0%9F%94%A5%20PUBLISHED%20IN-FINDINGS%20OF%20EMNLP%202026%20%F0%9F%94%A5-b22222?style=for-the-badge&labelColor=f5a623"></a>
 </p>
 
+[![ACL Anthology](https://img.shields.io/badge/ACL%20Anthology-2026.findings--emnlp.1403-ed1c24)](https://aclanthology.org/2026.findings-emnlp.1403/)
 [![arXiv](https://img.shields.io/badge/arXiv-2608.22335-b31b1b)](https://arxiv.org/abs/2608.22335)
 [![Project page](https://img.shields.io/badge/Project-Page-3fb950)](https://banglallm.github.io/banglasafe/)
 [![Leaderboard](https://img.shields.io/badge/Leaderboard-18%20models-8957e5)](https://banglallm.github.io/banglasafe/leaderboard.html)
@@ -156,15 +157,26 @@ The benchmark measures harmful compliance. It says nothing about over-refusal, s
 ## Citation
 
 ```bibtex
-@inproceedings{islam2026banglasafe,
-  title     = {Register Shifts Break {LLM} Safety: A Bengali Benchmark with Culturally Grounded Harms},
-  author    = {Islam, Naymul and Lia, Nusrat Jahan and Roy Dipta, Shubhashis and Sultan, Sabik Bin and Zehady, Abdullah Khan},
-  booktitle = {Findings of the Association for Computational Linguistics: EMNLP 2026},
-  year      = {2026},
-  eprint    = {2608.22335},
-  archivePrefix = {arXiv},
-  primaryClass  = {cs.CL},
-  url       = {https://arxiv.org/abs/2608.22335}
+@inproceedings{islam-etal-2026-register,
+    title = "Register Shifts Break {LLM} Safety: A {B}engali Benchmark with Culturally Grounded Harms",
+    author = "Islam, Naymul  and
+      Lia, Nusrat Jahan  and
+      Roy Dipta, Shubhashis  and
+      Sultan, Sabik Bin  and
+      Zehady, Abdullah Khan",
+    editor = "Lee, Hung-Yi  and
+      Dev, Sunipa  and
+      Li, Jessy  and
+      Elliott, Desmond",
+    booktitle = "Findings of the {A}ssociation for {C}omputational {L}inguistics: {EMNLP} 2026",
+    month = oct,
+    year = "2026",
+    address = "Budapest, Hungary",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2026.findings-emnlp.1403/",
+    doi = "10.18653/2026.findings-emnlp.1403",
+    pages = "29904--29923",
+    ISBN = "979-8-89176-462-0"
 }
 ```
 
