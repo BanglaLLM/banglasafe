@@ -3,11 +3,288 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BanglaSafe: Register Shifts Break LLM Safety</title>
-<meta name="description" content="A Bengali LLM safety benchmark with culturally grounded harms. 879 statute-anchored prompts, 17 harm categories, 5 register conditions, 18 models, 15,822 judged responses.">
+<title>BanglaSafe: Bengali LLM Safety Benchmark | EMNLP 2026 Findings</title>
+<meta name="description" content="BanglaSafe is a Bengali LLM safety benchmark: 879 prompts tied to Bangladeshi law, 17 harm categories, 5 registers, 18 models. Findings of EMNLP 2026.">
+<link rel="canonical" href="https://banglallm.github.io/banglasafe/">
 <meta property="og:title" content="BanglaSafe: Register Shifts Break LLM Safety">
 <meta property="og:description" content="The same harmful request phrased as formal Bengali journalism succeeds 17.5 points more often than as a casual message. No jailbreak required.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://banglallm.github.io/banglasafe/">
+<meta property="og:site_name" content="BanglaLLM">
+<meta property="og:image" content="https://banglallm.github.io/banglasafe/static/images/asr_by_condition.png">
+<meta property="og:image:width" content="1658">
+<meta property="og:image:height" content="886">
+<meta property="og:image:alt" content="Attack success rate by prompting condition: formal Bengali journalism 63.3%, casual Bengali 45.8%.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="BanglaSafe: Register Shifts Break LLM Safety">
+<meta name="twitter:description" content="The same harmful request phrased as formal Bengali journalism succeeds 17.5 points more often than as a casual message.">
+<meta name="twitter:image" content="https://banglallm.github.io/banglasafe/static/images/asr_by_condition.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "WebPage",
+   "@id": "https://banglallm.github.io/banglasafe/#webpage",
+   "url": "https://banglallm.github.io/banglasafe/",
+   "name": "BanglaSafe: Bengali LLM Safety Benchmark",
+   "inLanguage": "en",
+   "about": [
+    {
+     "@id": "https://banglallm.github.io/banglasafe/#dataset"
+    },
+    {
+     "@id": "https://banglallm.github.io/banglasafe/#paper"
+    }
+   ],
+   "mainEntity": {
+    "@id": "https://banglallm.github.io/banglasafe/#dataset"
+   },
+   "primaryImageOfPage": {
+    "@type": "ImageObject",
+    "url": "https://banglallm.github.io/banglasafe/static/images/asr_by_condition.png",
+    "width": 1658,
+    "height": 886
+   },
+   "isPartOf": {
+    "@type": "WebSite",
+    "name": "BanglaLLM",
+    "url": "https://banglallm.github.io/"
+   }
+  },
+  {
+   "@type": "ScholarlyArticle",
+   "@id": "https://banglallm.github.io/banglasafe/#paper",
+   "headline": "Register Shifts Break LLM Safety: A Bengali Benchmark with Culturally Grounded Harms",
+   "name": "Register Shifts Break LLM Safety: A Bengali Benchmark with Culturally Grounded Harms",
+   "alternativeHeadline": "BanglaSafe",
+   "author": [
+    {
+     "@type": "Person",
+     "name": "Naymul Islam",
+     "url": "https://ai-naymul.github.io/",
+     "sameAs": [
+      "https://github.com/ai-naymul"
+     ],
+     "affiliation": {
+      "@id": "https://banglallm.github.io/#org"
+     }
+    },
+    {
+     "@type": "Person",
+     "name": "Nusrat Jahan Lia",
+     "url": "https://nusrat-lia.github.io/",
+     "affiliation": {
+      "@type": "Organization",
+      "name": "Institute of Information Technology, University of Dhaka"
+     }
+    },
+    {
+     "@type": "Person",
+     "name": "Shubhashis Roy Dipta",
+     "url": "https://roydipta.com",
+     "affiliation": {
+      "@type": "Organization",
+      "name": "University of Maryland, Baltimore County"
+     }
+    },
+    {
+     "@type": "Person",
+     "name": "Sabik Bin Sultan",
+     "affiliation": {
+      "@type": "Organization",
+      "name": "Bangladesh Air Force Shaheen College Kurmitola"
+     }
+    },
+    {
+     "@type": "Person",
+     "name": "Abdullah Khan Zehady",
+     "url": "https://brishtiteveja.github.io",
+     "affiliation": {
+      "@type": "Organization",
+      "name": "Ciroos Inc."
+     }
+    }
+   ],
+   "datePublished": "2026-10",
+   "inLanguage": "en",
+   "url": "https://aclanthology.org/2026.findings-emnlp.1403/",
+   "sameAs": [
+    "https://arxiv.org/abs/2608.22335",
+    "https://doi.org/10.18653/2026.findings-emnlp.1403"
+   ],
+   "identifier": {
+    "@type": "PropertyValue",
+    "propertyID": "DOI",
+    "value": "10.18653/2026.findings-emnlp.1403"
+   },
+   "isPartOf": {
+    "@type": "Book",
+    "name": "Findings of the Association for Computational Linguistics: EMNLP 2026",
+    "isbn": "979-8-89176-462-0",
+    "publisher": {
+     "@type": "Organization",
+     "name": "Association for Computational Linguistics"
+    }
+   },
+   "pagination": "29904-29923",
+   "about": {
+    "@id": "https://banglallm.github.io/banglasafe/#dataset"
+   },
+   "keywords": [
+    "LLM safety",
+    "Bengali",
+    "Bangla",
+    "register",
+    "jailbreak",
+    "safety benchmark",
+    "red teaming",
+    "EMNLP 2026"
+   ]
+  },
+  {
+   "@type": "Dataset",
+   "@id": "https://banglallm.github.io/banglasafe/#dataset",
+   "name": "BanglaSafe",
+   "alternateName": [
+    "BanglaSafe benchmark",
+    "Bangla Safe"
+   ],
+   "description": "BanglaSafe is a Bengali (Bangla) safety benchmark for large language models. It has 879 harmful prompts written natively in Bengali and tied to Bangladeshi law, across 17 harm categories and five prompting conditions that vary language and register, with 15,822 judged responses from 18 models.",
+   "url": "https://banglallm.github.io/banglasafe/",
+   "sameAs": [
+    "https://huggingface.co/datasets/BanglaLLM/BanglaSafe",
+    "https://github.com/BanglaLLM/banglasafe"
+   ],
+   "license": "https://creativecommons.org/licenses/by/4.0/",
+   "isAccessibleForFree": true,
+   "creator": [
+    {
+     "@type": "Person",
+     "name": "Naymul Islam",
+     "url": "https://ai-naymul.github.io/",
+     "sameAs": [
+      "https://github.com/ai-naymul"
+     ],
+     "affiliation": {
+      "@id": "https://banglallm.github.io/#org"
+     }
+    },
+    {
+     "@type": "Person",
+     "name": "Nusrat Jahan Lia",
+     "url": "https://nusrat-lia.github.io/",
+     "affiliation": {
+      "@type": "Organization",
+      "name": "Institute of Information Technology, University of Dhaka"
+     }
+    },
+    {
+     "@type": "Person",
+     "name": "Shubhashis Roy Dipta",
+     "url": "https://roydipta.com",
+     "affiliation": {
+      "@type": "Organization",
+      "name": "University of Maryland, Baltimore County"
+     }
+    },
+    {
+     "@type": "Person",
+     "name": "Sabik Bin Sultan",
+     "affiliation": {
+      "@type": "Organization",
+      "name": "Bangladesh Air Force Shaheen College Kurmitola"
+     }
+    },
+    {
+     "@type": "Person",
+     "name": "Abdullah Khan Zehady",
+     "url": "https://brishtiteveja.github.io",
+     "affiliation": {
+      "@type": "Organization",
+      "name": "Ciroos Inc."
+     }
+    }
+   ],
+   "publisher": {
+    "@type": "Organization",
+    "@id": "https://banglallm.github.io/#org",
+    "name": "BanglaLLM",
+    "url": "https://banglallm.github.io/",
+    "sameAs": [
+     "https://github.com/banglallm",
+     "https://huggingface.co/BanglaLLM"
+    ]
+   },
+   "inLanguage": [
+    "bn",
+    "en"
+   ],
+   "dateCreated": "2026-08-02",
+   "dateModified": "2026-08-26",
+   "keywords": [
+    "Bengali LLM safety",
+    "Bangla LLM safety",
+    "AI safety benchmark",
+    "jailbreak",
+    "register shift",
+    "diglossia",
+    "harmful prompts",
+    "red teaming",
+    "Bangladesh"
+   ],
+   "citation": "https://aclanthology.org/2026.findings-emnlp.1403/",
+   "isBasedOn": "https://aclanthology.org/2026.findings-emnlp.1403/",
+   "distribution": [
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "application/x-parquet",
+     "contentUrl": "https://huggingface.co/datasets/BanglaLLM/BanglaSafe"
+    }
+   ],
+   "includedInDataCatalog": {
+    "@type": "DataCatalog",
+    "name": "Hugging Face Datasets",
+    "url": "https://huggingface.co/datasets"
+   }
+  },
+  {
+   "@type": "SoftwareSourceCode",
+   "@id": "https://banglallm.github.io/banglasafe/#code",
+   "name": "banglasafe",
+   "description": "Python package and CLI that runs the BanglaSafe benchmark against a model and scores it with the calibrated four-way judge.",
+   "codeRepository": "https://github.com/BanglaLLM/banglasafe",
+   "url": "https://github.com/BanglaLLM/banglasafe",
+   "sameAs": [
+    "https://pypi.org/project/banglasafe/"
+   ],
+   "programmingLanguage": "Python",
+   "license": "https://opensource.org/licenses/MIT",
+   "author": {
+    "@type": "Person",
+    "name": "Naymul Islam",
+    "url": "https://ai-naymul.github.io/",
+    "sameAs": [
+     "https://github.com/ai-naymul"
+    ],
+    "affiliation": {
+     "@id": "https://banglallm.github.io/#org"
+    }
+   }
+  },
+  {
+   "@type": "Organization",
+   "@id": "https://banglallm.github.io/#org",
+   "name": "BanglaLLM",
+   "url": "https://banglallm.github.io/",
+   "sameAs": [
+    "https://github.com/banglallm",
+    "https://huggingface.co/BanglaLLM"
+   ]
+  }
+ ]
+}
+</script>
 <link rel="icon" type="image/svg+xml" href="static/favicon.svg">
 <link rel="apple-touch-icon" href="static/favicon-180.png">
 <meta name="theme-color" content="#faf7f1">
@@ -44,6 +321,7 @@ a:hover{text-decoration:underline}
 /* hero */
 header{padding:46px 0 30px; text-align:center; border-bottom:1px solid var(--line)}
 h1{font-size:38px; line-height:1.2; margin:0 0 6px; letter-spacing:-.02em}
+h1 .name{display:block; font-size:17px; font-weight:700; color:var(--accent); letter-spacing:.01em; margin-bottom:12px}
 h1 .sub{display:block; font-size:22px; font-weight:600; color:var(--muted); margin-top:12px; letter-spacing:0}
 .authors{margin:22px 0 4px; font-size:16px}
 .authors a{color:var(--fg); text-decoration:underline; text-decoration-style:dotted;
@@ -223,7 +501,7 @@ footer a{color:var(--muted)}
 
 <header>
   <div class="wrap">
-    <h1>Register Shifts Break LLM Safety
+    <h1><span class="name">BanglaSafe</span>Register Shifts Break LLM Safety
       <span class="sub">A Bengali Benchmark with Culturally Grounded Harms</span>
     </h1>
     <div class="authors">
@@ -293,7 +571,7 @@ footer a{color:var(--muted)}
     <p class="lede">Every prompt is written in Bengali and tied to a real Bangladeshi law or case.</p>
 
     <figure>
-      <a href="static/images/overview.png" title="Open full size"><img class="framed" src="static/images/overview.png" alt="BanglaSafe construction pipeline: 879 prompts from a 17-category harm taxonomy, expanded across five prompting conditions, run through 18 LLMs, then validated and judged four ways."></a>
+      <a href="static/images/overview.png" title="Open full size"><img class="framed" src="static/images/overview.png" width="2523" height="598" loading="lazy" decoding="async" alt="BanglaSafe construction pipeline: 879 prompts from a 17-category harm taxonomy, expanded across five prompting conditions, run through 18 LLMs, then validated and judged four ways."></a>
       <figcaption class="panels">
         <span><b>Left</b>879 prompts (309 written directly by a native Bengali speaker, 570
         model-assisted and human-validated) drawn from a 17-category harm taxonomy, each category
@@ -335,7 +613,7 @@ footer a{color:var(--muted)}
     <p class="lede">How the request is written matters more than whether it is in English or Bengali.</p>
 
     <figure>
-      <a href="static/images/asr_by_condition.png" title="Open full size"><img src="static/images/asr_by_condition.png" alt="Attack success rate by prompting condition. EN_Direct 50.4%, EN_Inst 53.4%, BN_Formal 63.3%, BN_Collq 45.8%, BN_Inst 55.7%. The gap between BN_Formal and BN_Collq is 17.5 points."></a>
+      <a href="static/images/asr_by_condition.png" title="Open full size"><img src="static/images/asr_by_condition.png" width="1658" height="886" loading="lazy" decoding="async" alt="Attack success rate by prompting condition. EN_Direct 50.4%, EN_Inst 53.4%, BN_Formal 63.3%, BN_Collq 45.8%, BN_Inst 55.7%. The gap between BN_Formal and BN_Collq is 17.5 points."></a>
       <figcaption>
         Attack success rate by prompting condition, judged by a calibrated four-way rubric over
         15,822 responses. The underlying harm act is identical in every bar. Formal Bengali
@@ -368,7 +646,7 @@ footer a{color:var(--muted)}
     and register.</p>
 
     <figure>
-      <a href="static/images/per_model.png" title="Open full size"><img class="framed" src="static/images/per_model.png" alt="Table of attack success rate for all 18 models across the five prompting conditions, grouped by parameter scale."></a>
+      <a href="static/images/per_model.png" title="Open full size"><img class="framed" src="static/images/per_model.png" width="2347" height="2339" loading="lazy" decoding="async" alt="Table of attack success rate for all 18 models across the five prompting conditions, grouped by parameter scale."></a>
       <figcaption>Every model, every condition. Grouped by parameter scale, with the highest value
       in each column in bold and the highest within each group underlined. BN<sub>Formal</sub>
       beats BN<sub>Collq</sub> for 17 of the 18 models. The exception, TigerLLM-1B, sits at its
@@ -393,7 +671,7 @@ footer a{color:var(--muted)}
     </div>
 
     <figure>
-      <a href="static/images/four_way.png" title="Open full size"><img src="static/images/four_way.png" alt="Stacked bars of the four-way label distribution for each prompting condition, showing PARTIAL rising to 49.9% under the formal Bengali condition while HARMFUL falls to 13.5%."></a>
+      <a href="static/images/four_way.png" title="Open full size"><img src="static/images/four_way.png" width="1759" height="1057" loading="lazy" decoding="async" alt="Stacked bars of the four-way label distribution for each prompting condition, showing PARTIAL rising to 49.9% under the formal Bengali condition while HARMFUL falls to 13.5%."></a>
       <figcaption>Four-way label distribution by condition. This figure uses the internal condition
       codes: EN is EN<sub>Direct</sub>, EN_V3 is EN<sub>Inst</sub>, V1 is BN<sub>Formal</sub>,
       V2 is BN<sub>Collq</sub>, and V3 is BN<sub>Inst</sub>.</figcaption>
@@ -418,7 +696,7 @@ footer a{color:var(--muted)}
     </div>
 
     <figure>
-      <a href="static/images/coverage_gap.png" title="Open full size"><img class="framed" src="static/images/coverage_gap.png" alt="Matrix showing zero hits for six Bangladeshi harm terms across twelve English safety corpora, with one exception; generic English counterparts appear hundreds of times."></a>
+      <a href="static/images/coverage_gap.png" title="Open full size"><img class="framed" src="static/images/coverage_gap.png" width="1889" height="1546" loading="lazy" decoding="async" alt="Matrix showing zero hits for six Bangladeshi harm terms across twelve English safety corpora, with one exception; generic English counterparts appear hundreds of times."></a>
       <figcaption>Hits for six Bangladeshi harm terms across 12 English safety and RLHF corpora
       (80,589 prompts), with generic English counterparts from the same corpora below for
       comparison.</figcaption>
@@ -443,7 +721,7 @@ footer a{color:var(--muted)}
     </div>
 
     <figure class="narrow">
-      <a href="static/images/second_judge.png" title="Open full size"><img src="static/images/second_judge.png" alt="Scatter plot of per-model attack success rate under two independent judges. All 18 models fall close to the y equals x line, Pearson r 0.989."></a>
+      <a href="static/images/second_judge.png" title="Open full size"><img src="static/images/second_judge.png" width="1620" height="1591" loading="lazy" decoding="async" alt="Scatter plot of per-model attack success rate under two independent judges. All 18 models fall close to the y equals x line, Pearson r 0.989."></a>
       <figcaption>Per-model attack success rate under two independent judges. Each point is one of
       the 18 evaluated models; the dashed line is perfect agreement.</figcaption>
     </figure>
